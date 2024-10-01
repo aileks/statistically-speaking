@@ -14,7 +14,14 @@ function OpenModalMenuItem({
     if (typeof onItemClick === 'function') onItemClick();
   };
 
-  return <li onClick={onClick}>{itemText}</li>;
+  return (
+    <li
+      className='cursor-pointer'
+      onClick={onClick}
+    >
+      {itemText}
+    </li>
+  );
 }
 
 export default OpenModalMenuItem;

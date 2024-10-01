@@ -13,7 +13,7 @@ function ProfileButton() {
   const ulRef = useRef();
 
   const toggleMenu = e => {
-    e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
+    e.stopPropagation();
     setShowMenu(!showMenu);
   };
 
@@ -41,21 +41,32 @@ function ProfileButton() {
 
   return (
     <>
-      <button onClick={toggleMenu}>
-        <FaUserCircle />
+      <button
+        onClick={toggleMenu}
+        className='flex items-center text-gray-700 transition duration-200 hover:text-blue-600'
+        aria-label='User menu'
+      >
+        <FaUserCircle className='text-2xl' />
       </button>
 
       {showMenu && (
         <ul
-          className='aboslute z-10 top-12 right-0 border border-gray-400 rounded-md p-2'
+          className='absolute right-0 z-10 mt-2 w-fit rounded-md border border-gray-400 bg-white px-3 py-2 shadow-md'
           ref={ulRef}
         >
           {user ?
             <>
-              <li>{user.username}</li>
-              <li>{user.email}</li>
-              <li>
-                <button onClick={logout}>Log Out</button>
+              <li className='font-semibold text-gray-900'>
+                Hello, {user.username}!
+              </li>
+              <li className='text-gray-600'>{user.email}</li>
+              <li className='mt-2'>
+                <button
+                  onClick={logout}
+                  className='w-full text-left text-red-600 hover:text-red-800'
+                >
+                  Log Out
+                </button>
               </li>
             </>
           : <>

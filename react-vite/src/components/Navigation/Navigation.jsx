@@ -1,18 +1,23 @@
 import { NavLink } from 'react-router-dom';
 import ProfileButton from './ProfileButton';
 
-function Navigation() {
+export default function Navigation() {
   return (
-    <ul className='relative mx-4 mt-4 flex justify-between border-b border-blue-500'>
-      <li>
-        <NavLink to='/'>Home</NavLink>
-      </li>
+    <nav className='border-b border-blue-500 bg-white shadow-md py-4 px-4'>
+      <ul className='flex items-center justify-between'>
+        <li>
+          <NavLink
+            to='/'
+            className='text-blue-600 hover:text-blue-400 font-medium transition duration-200'
+          >
+            Home
+          </NavLink>
+        </li>
 
-      <li>
-        <ProfileButton />
-      </li>
-    </ul>
+        <li>
+          <ProfileButton />
+        </li>
+      </ul>
+    </nav>
   );
 }
-
-export default Navigation;
