@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from . import PostComment
 from .db import db, environment, SCHEMA
 
 
@@ -15,4 +14,6 @@ class Comment(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
 
-    posts = db.relationship("Post", secondary=PostComment, back_populates="comments")
+    posts = db.relationship(
+        "Post", secondary="post_comments", back_populates="comments"
+    )

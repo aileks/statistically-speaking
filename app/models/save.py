@@ -14,3 +14,6 @@ class Save(db.Model):
     post_id = db.Column(
         db.Integer, db.ForeignKey(add_prefix_for_prod("posts.id")), nullable=False
     )
+
+    user = db.relationship("User", back_populates="saves")
+    post = db.relationship("Post", back_populates="saves")

@@ -16,3 +16,5 @@ class Graph(db.Model):
         nullable=False,
         unique=True,
     )
+
+    post = db.relationship("Post", back_populates="graph")
