@@ -1,12 +1,11 @@
-import { NavLink } from "react-router-dom";
-import ProfileButton from "./ProfileButton";
-import "./Navigation.css";
+import { NavLink } from 'react-router-dom';
+import ProfileButton from './ProfileButton';
 
 function Navigation() {
   return (
-    <ul>
+    <ul className='flex justify-between mx-4 mt-4 border-b border-blue-500'>
       <li>
-        <NavLink to="/">Home</NavLink>
+        <NavLink to='/'>Home</NavLink>
       </li>
 
       <li>
