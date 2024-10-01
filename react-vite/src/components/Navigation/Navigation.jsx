@@ -3,7 +3,7 @@ import ProfileButton from './ProfileButton';
 
 function Navigation() {
   return (
-    <ul className='mx-4 mt-4 flex justify-between border-b border-blue-500'>
+    <ul className='relative mx-4 mt-4 flex justify-between border-b border-blue-500'>
       <li>
         <NavLink to='/'>Home</NavLink>
       </li>

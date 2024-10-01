@@ -44,10 +44,12 @@ function ProfileButton() {
       <button onClick={toggleMenu}>
         <FaUserCircle />
       </button>
+
       {showMenu && (
         <ul
-          className={'profile-dropdown'}
-          ref={ulRef}>
+          className='aboslute z-10 top-12 right-0 border border-gray-400 rounded-md p-2'
+          ref={ulRef}
+        >
           {user ?
             <>
               <li>{user.username}</li>
