@@ -12,7 +12,7 @@ from .config import Config
 from .models import db, User
 from .seeds import seed_commands
 
-app = Flask(__name__, static_folder="../react-vite/dist", static_url_path="/")
+app: Flask = Flask(__name__, static_folder="../react-vite/dist", static_url_path="/")
 
 # Setup login manager
 login: LoginManager = LoginManager(app)
