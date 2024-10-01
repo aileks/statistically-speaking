@@ -3,7 +3,7 @@ import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
 import Index from '../components/Index';
-import Post from '../components/Post/';
+import Post from '../components/Posts/';
 
 export const router = createBrowserRouter([
   {
@@ -12,6 +12,11 @@ export const router = createBrowserRouter([
       {
         path: '/',
         element: <Index />,
+        loader: async () => {
+          const res = await fetch('/api/posts');
+          const data = await res.json();
+          return data;
+        },
       },
       {
         path: 'login',
@@ -27,7 +32,8 @@ export const router = createBrowserRouter([
         loader: async ({ params }) => {
           const { postId } = params;
           const res = await fetch(`/api/posts/${postId}`);
-          return res.json();
+          const data = res.json();
+          return data;
         },
       },
     ],

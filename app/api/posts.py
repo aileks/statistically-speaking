@@ -6,9 +6,9 @@ posts = Blueprint("posts", __name__)
 
 
 @posts.route("")
-def get_posts() -> dict[str, list[dict[str, str]]]:
+def get_posts() -> list[dict[str, str]]:
     all_posts: list[Post] = Post.query.all()
-    return {"posts": [post.to_dict() for post in all_posts]}
+    return [post.to_dict() for post in all_posts]
 
 
 @posts.route("/<int:post_id>")

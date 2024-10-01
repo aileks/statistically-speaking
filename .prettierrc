@@ -4,8 +4,8 @@
   "singleQuote": true,
   "experimentalTernaries": true,
   "jsxSingleQuote": true,
-  "bracketSameLine": true,
-  "jsxBracketSameLine": true,
+  "bracketSameLine": false,
+  "jsxBracketSameLine": false,
   "arrowParens": "avoid",
   "vueIndentScriptAndStyle": true,
   "singleAttributePerLine": true
