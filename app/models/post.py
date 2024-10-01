@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from . import PostComment
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 
 
@@ -18,6 +19,6 @@ class Post(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
 
-    comments = db.relationship("PostComment", back_populates="post")
+    comments = db.relationship("Comment", secondary=PostComment, back_populates="posts")
     graph = db.relationship("Graph", back_populates="post", uselist=False)
     saves = db.relationship("Save", back_populates="post")
