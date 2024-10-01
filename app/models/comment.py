@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Union
 
 from .db import db, environment, SCHEMA
+from .post import post_comment
 
 
 class Comment(db.Model):
@@ -14,9 +15,7 @@ class Comment(db.Model):
     body = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now())
     updated_at = db.Column(db.DateTime, onupdate=datetime.now())
-    posts = db.relationship(
-        "Post", secondary="post_comments", back_populates="comments"
-    )
+    posts = db.relationship("Post", secondary=post_comment, back_populates="comments")
 
     def to_dict(self) -> dict[str, Union[int, str]]:
         return {
