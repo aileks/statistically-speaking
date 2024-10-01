@@ -25,3 +25,13 @@ class Post(db.Model):
     comments = db.relationship(
         "Comment", secondary="post_comments", back_populates="posts"
     )
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "body": self.body,
+            "user_id": self.user_id,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+        }
