@@ -14,3 +14,10 @@ class PostComment(db.Model):
     comment_id = db.Column(
         db.Integer, db.ForeignKey(add_prefix_for_prod("comments.id")), nullable=False
     )
+
+    def to_dict(self) -> dict[str, int]:
+        return {
+            "id": self.id,
+            "post_id": self.post_id,
+            "comment_id": self.comment_id,
+        }

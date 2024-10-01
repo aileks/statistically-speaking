@@ -17,3 +17,10 @@ class Save(db.Model):
 
     user = db.relationship("User", back_populates="saves")
     post = db.relationship("Post", back_populates="saves")
+
+    def to_dict(self) -> dict[str, int]:
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "post_id": self.post_id,
+        }

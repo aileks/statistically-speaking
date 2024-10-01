@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Union
 
 from .db import db, environment, SCHEMA
 
@@ -17,3 +18,11 @@ class Comment(db.Model):
     posts = db.relationship(
         "Post", secondary="post_comments", back_populates="comments"
     )
+
+    def to_dict(self) -> dict[str, Union[int, str]]:
+        return {
+            "id": self.id,
+            "body": self.body,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+        }

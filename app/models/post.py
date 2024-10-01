@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Union
 
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 
@@ -26,7 +27,7 @@ class Post(db.Model):
         "Comment", secondary="post_comments", back_populates="posts"
     )
 
-    def to_dict(self):
+    def to_dict(self) -> dict[str, Union[int, str]]:
         return {
             "id": self.id,
             "title": self.title,
