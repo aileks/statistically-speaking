@@ -21,4 +21,3 @@ export default function AllPosts({ posts }) {
     </div>
   );
 }
-weqr;
