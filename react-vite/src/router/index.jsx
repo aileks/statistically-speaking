@@ -18,26 +18,44 @@ export const router = createBrowserRouter([
           return data;
         },
         action: async ({ request }) => {
-          const formData = await request.formData();
+          try {
+            const formData = await request.formData();
+            const { _action, ...postData } = Object.fromEntries(formData);
 
-          const res = await fetch('/api/posts', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              title: formData.get('title'),
-              body: formData.get('body'),
-            }),
-          });
+            if (_action === 'DELETE') {
+              const res = await fetch(`/api/posts/${postData.id}`, {
+                method: 'DELETE',
+              });
 
-          if (!res.ok) {
-            const errorData = await res.json();
-            return { error: errorData };
+              if (!res.ok) {
+                const errorData = await res.json();
+                console.error('Error deleting post:', errorData);
+                return { error: errorData };
+              }
+
+              return { success: true, message: 'Post deleted successfully' };
+            } else {
+              const res = await fetch('/api/posts', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(postData),
+              });
+
+              if (!res.ok) {
+                const errorData = await res.json();
+                console.error('Error creating post:', errorData);
+                return { error: errorData };
+              }
+
+              const newPost = await res.json();
+              return { success: true, post: newPost };
+            }
+          } catch (error) {
+            console.error('Error in post action:', error);
+            return { error: { message: 'An unexpected error occurred' } };
           }
-
-          const newPost = await res.json();
-          return { success: true, post: newPost };
         },
       },
       {

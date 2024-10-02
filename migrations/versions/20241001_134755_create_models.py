@@ -73,12 +73,21 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint("id"),
     )
+    op.create_table(
+        "post_comments",
+        sa.Column("post_id", sa.Integer(), nullable=False),
+        sa.Column("comment_id", sa.Integer(), nullable=False),
+        sa.ForeignKeyConstraint(["post_id"], ["posts.id"], ondelete="CASCADE"),
+        sa.ForeignKeyConstraint(["comment_id"], ["comments.id"], ondelete="CASCADE"),
+        sa.PrimaryKeyConstraint("post_id", "comment_id"),
+    )
 
     if environment == "production":
         op.execute(f"ALTER TABLE comments SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE posts SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE graphs SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE saves SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE post_comments SET SCHEMA {SCHEMA};")
     # ### end Alembic commands ###
 
 
@@ -88,4 +97,5 @@ def downgrade():
     op.drop_table("graphs")
     op.drop_table("posts")
     op.drop_table("comments")
+    op.drop_table("post_comments")
     # ### end Alembic commands ###

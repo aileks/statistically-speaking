@@ -3,7 +3,7 @@ from typing import Union
 
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 
-post_comment = db.Table(
+post_comments = db.Table(
     "post_comments",
     db.Model.metadata,
     db.Column("post_id", db.Integer, db.ForeignKey(add_prefix_for_prod("posts.id"))),
@@ -33,7 +33,7 @@ class Post(db.Model):
     graph = db.relationship("Graph", uselist=False, back_populates="post")
     saves = db.relationship("Save", back_populates="post")
     comments = db.relationship(
-        "Comment", secondary=post_comment, back_populates="posts"
+        "Comment", secondary=post_comments, back_populates="posts"
     )
 
     def to_dict(self) -> dict[str, Union[int, str]]:

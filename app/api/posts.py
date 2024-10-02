@@ -54,4 +54,5 @@ def delete_post(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int
 
     db.session.delete(post)
     db.session.commit()
+
     return {"message": "Post deleted successfully"}
