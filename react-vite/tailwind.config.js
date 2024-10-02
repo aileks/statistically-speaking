@@ -5,8 +5,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Sora', 'sans-serif'],
+        cursive: ['Cedarville Cursive', 'cursive'],
       },
     },
   },
-  plugins: [],
 };

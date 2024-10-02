@@ -20,6 +20,8 @@ export default function Navigation() {
           </NavLink>
         </li>
 
+        <li className='font-cursive text-3xl'>Statistically Speaking</li>
+
         <li>
           <ProfileButton />
         </li>
