@@ -68,12 +68,7 @@ export default function Post() {
     <div className='container'>
       <div className='mt-14 card flex flex-col'>
         {editingPostId === post.id ?
-          <form
-            onSubmit={e => {
-              e.preventDefault();
-              handleSave(post.id);
-            }}
-          >
+          <div className='flex flex-col gap-4'>
             <input
               type='text'
               value={editedTitle}
@@ -95,24 +90,25 @@ export default function Post() {
             )}
 
             {errors.message && (
-              <p className='text-red-500 text-sm-italic'>{errors.message}</p>
+              <p className='text-red-500 text-sm italic'>{errors.message}</p>
             )}
-            <button
-              type='submit'
-              className='btn-save'
-              disabled={editedBody.length === 0 || editedTitle.length === 0}
-            >
-              Save
-            </button>
 
-            <button
-              type='button'
-              onClick={() => setEditingPostId(-1)}
-              className='btn-cancel'
-            >
-              Cancel
-            </button>
-          </form>
+            <div className='space-x-3 self-end'>
+              <button
+                onClick={() => handleSave(post.id)}
+                className='btn-save'
+              >
+                Save
+              </button>
+
+              <button
+                onClick={() => setEditingPostId(null)}
+                className='btn-delete'
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         : <>
             <h2 className='font-bold underline'>{post.title}</h2>
 

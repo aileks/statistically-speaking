@@ -34,7 +34,7 @@ export default function AllPosts({ posts }) {
     }
 
     if (!editedBody.length) {
-      newErrors.body = 'Post editingBody is required';
+      newErrors.body = 'Post body is required';
     } else if (editedBody.length < 10) {
       newErrors.body = 'Post must be at least 10 characters';
     } else if (editedBody.length > 500) {
