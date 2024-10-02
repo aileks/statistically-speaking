@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useFetcher } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import EditPost from './EditPost.jsx';
+import SaveIcon from '../SaveIcon/index.js';
 
 export default function AllPosts({ posts }) {
   const user = useSelector(state => state.session.user);
@@ -23,13 +24,13 @@ export default function AllPosts({ posts }) {
 
   return (
     <div className='container'>
-      <h2 className='text-2xl font-bold'>Your Feed</h2>
+      <h2 className='text-2xl font-bold'>{user ? 'Your Feed' : 'Feed'}</h2>
 
       {posts.length &&
         posts.map(post => (
           <div
             key={post.id}
-            className='card flex flex-col'
+            className='flex flex-col card'
           >
             {editingPostId === post.id ?
               <EditPost
@@ -42,22 +43,31 @@ export default function AllPosts({ posts }) {
                 <p className='text-sm'>{post.body}</p>
 
                 <div className='flex flex-col'>
-                  {user && user.id === post.user_id && (
-                    <div className='space-x-3 self-end'>
-                      <button
-                        onClick={e => handleEdit(e, post)}
-                        className='btn-edit'
-                      >
-                        Edit
-                      </button>
+                  {user && (
+                    <>
+                      {user.id !== post.user_id ?
+                        <SaveIcon
+                          fetcher={fetcher}
+                          post={post}
+                          user={user}
+                        />
+                      : <div className='self-end space-x-3'>
+                          <button
+                            onClick={e => handleEdit(e, post)}
+                            className='btn-edit'
+                          >
+                            Edit
+                          </button>
 
-                      <button
-                        onClick={e => handleDelete(e, post.id)}
-                        className='btn-delete'
-                      >
-                        Delete
-                      </button>
-                    </div>
+                          <button
+                            onClick={e => handleDelete(e, post.id)}
+                            className='btn-delete'
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      }
+                    </>
                   )}
                 </div>
               </Link>

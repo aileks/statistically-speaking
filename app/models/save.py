@@ -21,6 +21,6 @@ class Save(db.Model):
     def to_dict(self) -> dict[str, int]:
         return {
             "id": self.id,
-            "user_id": self.user_id,
-            "post_id": self.post_id,
+            "userId": self.user_id,
+            "postId": self.post_id,
         }

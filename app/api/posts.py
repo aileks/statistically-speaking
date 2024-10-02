@@ -3,7 +3,7 @@ from typing import Union
 from flask import Blueprint, request
 from flask_login import current_user
 
-from app.models import db, Post
+from app.models import db, Post, Save
 
 posts = Blueprint("posts", __name__)
 
@@ -19,6 +19,7 @@ def get_posts() -> list[dict[str, str]]:
 @posts.route("/<int:post_id>")
 def post_by_id(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int]]:
     post: Post = Post.query.get(post_id)
+
     if not post:
         return {"error": "Post not found"}, 404
 
@@ -68,10 +69,47 @@ def delete_post(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int
     if not post:
         return {"error": "Post not found"}, 404
 
-    if post.user_id != current_user.id:
+    if post.user_id != current_user.id or not current_user:
         return {"error": "Unauthorized"}, 401
 
     db.session.delete(post)
     db.session.commit()
 
     return {"message": "Post deleted successfully"}
+
+
+@posts.route("/<int:post_id>/save", methods=["POST"])
+def save_post(post_id: int) -> Union[tuple[dict[str, str], int], list[dict[str, int]]]:
+    post: Post = Post.query.get(post_id)
+
+    if not post:
+        return {"error": "Post not found"}, 404
+
+    if not current_user or post.user_id == current_user.id:
+        return {"error": "Unauthorized"}, 401
+
+    new_save: Save = Save(user_id=current_user.id, post_id=post_id)
+
+    db.session.add(new_save)
+    db.session.commit()
+
+    return [save.to_dict() for save in current_user.saves]
+
+
+@posts.route("/<int:post_id>/save", methods=["DELETE"])
+def unsave_post(
+    post_id: int,
+) -> Union[tuple[dict[str, str], int], list[dict[str, int]]]:
+    post: Post = Post.query.get(post_id)
+    save: Save = Save.query.filter_by(user_id=current_user.id, post_id=post_id).first()
+
+    if not post or not save:
+        return {"error": "Not found"}, 404
+
+    if not current_user or post.user_id == current_user.id:
+        return {"error": "Unauthorized"}, 401
+
+    db.session.delete(save)
+    db.session.commit()
+
+    return [save.to_dict() for save in current_user.saves]

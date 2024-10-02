@@ -62,7 +62,7 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
       />
 
       {errors.title && (
-        <p className='text-red-500 text-sm italic'>{errors.title}</p>
+        <p className='text-sm italic text-red-500'>{errors.title}</p>
       )}
 
       <textarea
@@ -72,17 +72,17 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
         className='rounded-lg border border-gray-400 bg-white p-3'
       />
       {errors.body && (
-        <p className='text-red-500 text-sm italic'>{errors.body}</p>
+        <p className='text-sm italic text-red-500'>{errors.body}</p>
       )}
 
       {errors.message && (
-        <p className='text-red-500 text-sm italic'>{errors.message}</p>
+        <p className='text-sm italic text-red-500'>{errors.message}</p>
       )}
 
-      <div className='space-x-3 self-end'>
+      <div className='self-end space-x-3'>
         <button
           onClick={() => handleSave(post.id)}
-          className='btn-save disabled:opacity-50 disabled:cursor-not-allowed'
+          className='btn-save disabled:cursor-not-allowed disabled:opacity-50'
           disabled={disabled}
         >
           Save

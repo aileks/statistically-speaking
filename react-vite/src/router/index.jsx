@@ -87,6 +87,46 @@ export const router = createBrowserRouter([
           }
         },
       },
+      {
+        path: '/save',
+        action: async ({ request }) => {
+          const formData = await request.formData();
+
+          try {
+            const res = await fetch(
+              `/api/posts/${formData.get('postId')}/save`,
+              {
+                method: 'POST',
+              }
+            );
+
+            return res.json();
+          } catch (err) {
+            console.error('Error in save action:', err);
+            return err;
+          }
+        },
+      },
+      {
+        path: '/unsave',
+        action: async ({ request }) => {
+          const formData = await request.formData();
+
+          try {
+            const res = await fetch(
+              `/api/posts/${formData.get('postId')}/save`,
+              {
+                method: 'DELETE',
+              }
+            );
+
+            return res.json();
+          } catch (err) {
+            console.error('Error in unsave action:', err);
+            return err;
+          }
+        },
+      },
     ],
   },
 ]);

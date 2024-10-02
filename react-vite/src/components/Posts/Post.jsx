@@ -24,7 +24,7 @@ export default function Post() {
 
   return (
     <div className='container'>
-      <div className='mt-14 card flex flex-col'>
+      <div className='mt-14 flex flex-col card'>
         {editingPostId === post.id ?
           <EditPost
             setEditingPostId={setEditingPostId}
@@ -37,7 +37,7 @@ export default function Post() {
             <p className='text-lg'>{post.body}</p>
 
             {user && user.id === post.user_id && (
-              <div className='space-x-3 self-end'>
+              <div className='self-end space-x-3'>
                 <button
                   onClick={e => handleEdit(e, post)}
                   className='btn-edit'
