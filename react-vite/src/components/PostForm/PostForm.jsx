@@ -1,23 +1,26 @@
 import { useState } from 'react';
 
-export default function PostForm() {
+export default function PostForm({ onPostSubmit }) {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
 
   const handleSubmit = async e => {
     e.preventDefault();
 
-    const res = await fetch('/posts', {
+    const newPost = { title, body };
+
+    const res = await fetch('/api/posts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ title, body }),
+      body: JSON.stringify(newPost),
     });
 
     if (res.ok) {
       setTitle('');
       setBody('');
+      onPostSubmit();
     } else {
       const error = await res.json();
       console.error(error);
@@ -27,7 +30,7 @@ export default function PostForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className='my-6 p-4 bg-white shadow-md rounded-md flex flex-col container gap-4'
+      className='container my-6 flex flex-col gap-4 rounded-md bg-white p-4 shadow-md'
     >
       <input
         type='text'
@@ -35,20 +38,21 @@ export default function PostForm() {
         onChange={e => setTitle(e.target.value)}
         placeholder='Title'
         required
-        className='bg-white border border-gray-400 rounded-lg p-3'
+        className='rounded-lg border border-gray-400 bg-white p-3'
       />
 
       <textarea
         value={body}
         onChange={e => setBody(e.target.value)}
-        placeholder="What's on your mind?"
+        placeholder='Post'
+        rows={5}
         required
-        className='bg-white border border-gray-400 rounded-lg p-3'
+        className='rounded-lg border border-gray-400 bg-white p-3'
       />
 
       <button
         type='submit'
-        className='btn max-w-fit self-end'
+        className='max-w-fit self-end btn'
       >
         Post
       </button>

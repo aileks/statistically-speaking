@@ -32,7 +32,7 @@ export const router = createBrowserRouter([
         loader: async ({ params }) => {
           const { postId } = params;
           const res = await fetch(`/api/posts/${postId}`);
-          const data = res.json();
+          const data = await res.json();
           return data;
         },
       },

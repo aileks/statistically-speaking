@@ -10,7 +10,7 @@ posts = Blueprint("posts", __name__)
 
 @posts.route("")
 def get_posts() -> list[dict[str, str]]:
-    all_posts: list[Post] = Post.query.all()
+    all_posts: list[Post] = Post.query.order_by(Post.created_at.desc()).all()
     return [post.to_dict() for post in all_posts]
 
 
@@ -29,11 +29,9 @@ def create_post() -> Union[dict[str, str], tuple[dict[str, str], int]]:
         return {"error": "Unauthorized"}, 401
 
     new_post: Post = Post(
-        {
-            "title": request.args.get("title"),
-            "body": request.args.get("body"),
-            "user_id": current_user.id,
-        }
+        title=request.get_json()["title"],
+        body=request.get_json()["body"],
+        user_id=current_user.id,
     )
 
     db.session.add(new_post)
