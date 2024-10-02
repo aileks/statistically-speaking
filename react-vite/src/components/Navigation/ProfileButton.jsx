@@ -43,7 +43,7 @@ function ProfileButton() {
     <>
       <button
         onClick={toggleMenu}
-        className='flex items-center text-gray-700 transition duration-200 hover:text-blue-600'
+        className='flex items-center text-gray-700 transition-colors duration-200 ease-in-out hover:text-blue-600'
         aria-label='User menu'
       >
         <FaUserCircle className='text-2xl' />

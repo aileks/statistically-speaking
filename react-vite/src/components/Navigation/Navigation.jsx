@@ -3,18 +3,18 @@ import ProfileButton from './ProfileButton';
 
 export default function Navigation() {
   return (
-    <nav className="border-b border-blue-500 bg-white shadow-md py-4 px-4">
-      <ul className="flex items-center justify-between">
-        <li className="flex items-center">
+    <nav className='border-b border-blue-500 bg-white px-4 py-4 shadow-md'>
+      <ul className='flex items-center justify-between'>
+        <li className='flex items-center'>
           <img
-            src="/brain_logo.jpg"
-            className="h-10 w-10 rounded-full"
-            alt="logo image"
+            src='/brain_logo.jpg'
+            className='h-10 w-10 rounded-full'
+            alt='logo image'
           />
 
           <NavLink
-            to="/"
-            className="ml-2 text-blue-600 hover:text-blue-400 font-medium transition duration-200"
+            to='/'
+            className='ml-2 font-medium text-gray-700 transition-colors duration-200 ease-in-out hover:text-blue-600'
           >
             Home
           </NavLink>

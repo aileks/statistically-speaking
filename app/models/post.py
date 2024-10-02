@@ -41,7 +41,7 @@ class Post(db.Model):
             "id": self.id,
             "title": self.title,
             "body": self.body,
-            "user_id": self.user_id,
-            "created_at": self.created_at,
-            "updated_at": self.updated_at,
+            "userId": self.user_id,
+            "createdAt": self.created_at,
+            "updatedAt": self.updated_at,
         }
