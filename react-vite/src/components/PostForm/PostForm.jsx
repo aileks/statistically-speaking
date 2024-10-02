@@ -1,34 +1,51 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useFetcher } from 'react-router-dom';
 
-export default function PostForm({ onPostSubmit }) {
+export default function PostForm() {
+  const fetcher = useFetcher();
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const [errors, setErrors] = useState({});
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
+    setErrors({});
 
-    const newPost = { title, body };
+    const newErrors = {};
 
-    const res = await fetch('/api/posts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newPost),
-    });
+    if (!title.length) {
+      newErrors.title = 'Title is required';
+    } else if (title.length < 5) {
+      newErrors.title = 'Title must be at least 5 characters';
+    } else if (title.length > 50) {
+      newErrors.title = 'Title cannot be more than 50 characters';
+    }
 
-    if (res.ok) {
-      setTitle('');
-      setBody('');
-      onPostSubmit();
-    } else {
-      const error = await res.json();
-      console.error(error);
+    if (!body.length) {
+      newErrors.body = 'Post body is required';
+    } else if (body.length < 10) {
+      newErrors.body = 'Post must be at least 10 characters';
+    } else if (body.length > 500) {
+      newErrors.body = 'Post cannot be more than 500 characters';
+    }
+
+    setErrors(newErrors);
+
+    if (!errors.title && !errors.body) {
+      fetcher.submit({ title, body }, { method: 'POST', action: '/' });
     }
   };
 
+  useEffect(() => {
+    if (fetcher.state === 'idle' && fetcher.data?.success) {
+      setTitle('');
+      setBody('');
+    }
+  }, [fetcher]);
+
   return (
-    <form
+    <fetcher.Form
+      method='POST'
       onSubmit={handleSubmit}
       className='container my-6 flex flex-col gap-4 rounded-md bg-white p-4 shadow-md'
     >
@@ -40,6 +57,7 @@ export default function PostForm({ onPostSubmit }) {
         required
         className='rounded-lg border border-gray-400 bg-white p-3'
       />
+      {errors.title && <p className='text-red-500'>{errors.title}</p>}
 
       <textarea
         value={body}
@@ -49,6 +67,7 @@ export default function PostForm({ onPostSubmit }) {
         required
         className='rounded-lg border border-gray-400 bg-white p-3'
       />
+      {errors.body && <p className='text-red-500'>{errors.body}</p>}
 
       <button
         type='submit'
@@ -56,6 +75,6 @@ export default function PostForm({ onPostSubmit }) {
       >
         Post
       </button>
-    </form>
+    </fetcher.Form>
   );
 }

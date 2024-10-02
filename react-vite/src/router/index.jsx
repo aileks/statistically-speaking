@@ -17,6 +17,26 @@ export const router = createBrowserRouter([
           const data = await res.json();
           return data;
         },
+        action: async ({ request }) => {
+          const formData = await request.formData();
+          const postData = Object.fromEntries(formData);
+
+          const res = await fetch('/api/posts', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postData),
+          });
+
+          if (!res.ok) {
+            const errorData = await res.json();
+            return { error: errorData };
+          }
+
+          const newPost = await res.json();
+          return { success: true, post: newPost };
+        },
       },
       {
         path: 'login',
