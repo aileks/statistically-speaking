@@ -1,13 +1,20 @@
-import { useLoaderData } from 'react-router-dom';
+import { useFetcher, useLoaderData } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export default function Post() {
   const post = useLoaderData();
+  const fetcher = useFetcher();
   const user = useSelector(state => state.session.user);
 
   const handleDelete = (e, postId) => {
     e.preventDefault();
-    alert('Feature coming soon! Post ID: ' + postId);
+
+    if (window.confirm('Are you sure you want to delete this post?')) {
+      fetcher.submit(
+        { id: postId, _action: 'DELETE' },
+        { method: 'POST', action: '/' }
+      );
+    }
   };
 
   const handleEdit = (e, postId) => {

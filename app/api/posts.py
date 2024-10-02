@@ -26,13 +26,13 @@ def post_by_id(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int]
 
 
 @posts.route("", methods=["POST"])
-def create_post() -> Union[dict[str, str], tuple[dict[str, str], int]]:
+def update_post() -> Union[dict[str, str], tuple[dict[str, str], int]]:
     if not current_user:
         return {"error": "Unauthorized"}, 401
 
     new_post: Post = Post(
-        title=request.get_json()["title"],
-        body=request.get_json()["body"],
+        title=request.form.get("title"),
+        body=request.form.get("body"),
         user_id=current_user.id,
     )
 
@@ -40,6 +40,25 @@ def create_post() -> Union[dict[str, str], tuple[dict[str, str], int]]:
     db.session.commit()
 
     return new_post.to_dict()
+
+
+@posts.route("<int:post_id>", methods=["PUT"])
+def create_post(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int]]:
+    updated_post: Post = Post.query.get(post_id)
+
+    if not updated_post:
+        return {"error": "Post not found"}, 404
+
+    if updated_post.user_id != current_user.id or not current_user:
+        return {"error": "Unauthorized"}, 401
+
+    updated_post.title = request.form.get("title")
+    updated_post.body = request.form.get("body")
+
+    db.session.add(updated_post)
+    db.session.commit()
+
+    return updated_post.to_dict()
 
 
 @posts.route("/<int:post_id>", methods=["DELETE"])

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useFetcher } from 'react-router-dom';
 
 export default function PostForm() {
@@ -32,16 +32,16 @@ export default function PostForm() {
     setErrors(newErrors);
 
     if (!errors.title && !errors.body) {
-      fetcher.submit({ title, body }, { method: 'POST', action: '/' });
+      try {
+        fetcher.submit({ title, body }, { method: 'POST', action: '/new' });
+        setBody('');
+        setTitle('');
+      } catch (err) {
+        console.error(err);
+        setErrors(err);
+      }
     }
   };
-
-  useEffect(() => {
-    if (fetcher.state === 'idle' && fetcher.data?.success) {
-      setTitle('');
-      setBody('');
-    }
-  }, [fetcher]);
 
   return (
     <fetcher.Form
@@ -68,6 +68,8 @@ export default function PostForm() {
         className='rounded-lg border border-gray-400 bg-white p-3'
       />
       {errors.body && <p className='text-red-500'>{errors.body}</p>}
+
+      {errors.message && <p className='text-red-500'>{errors.message}</p>}
 
       <button
         type='submit'

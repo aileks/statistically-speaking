@@ -28,16 +28,24 @@ p {
     @apply mb-4 text-base leading-relaxed;
 }
 
+input, textarea {
+    @apply bg-white;
+}
+
 .btn {
     @apply bg-teal-600 text-white font-semibold py-2 px-4 rounded-lg shadow hover:bg-teal-700 transition duration-200 ease-in-out;
 }
 
-.btn-edit, .btn-delete {
+.btn-edit, .btn-delete, .btn-save {
     @apply bg-gray-300 text-gray-800 font-medium py-1 px-2 rounded shadow-sm hover:bg-gray-400 transition duration-200 ease-in-out text-sm;
 }
 
 .btn-delete {
     @apply bg-red-500 hover:bg-red-600 text-white;
+}
+
+.btn-save {
+    @apply bg-teal-600 hover:bg-teal-700 text-white;
 }
 
 .card {

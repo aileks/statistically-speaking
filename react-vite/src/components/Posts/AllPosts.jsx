@@ -1,23 +1,63 @@
+import { useState } from 'react';
 import { Link, useFetcher } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export default function AllPosts({ posts }) {
   const user = useSelector(state => state.session.user);
   const fetcher = useFetcher();
+  const [editingPostId, setEditingPostId] = useState(-1);
+  const [editedTitle, setEditedTitle] = useState('');
+  const [editedBody, setEditedBody] = useState('');
+  const [errors, setErrors] = useState({});
 
-  const handleEdit = (e, postId) => {
+  const handleEdit = (e, post) => {
     e.preventDefault();
-    alert('Feature coming soon! Post ID: ' + postId);
+    setEditingPostId(post.id);
+    setEditedTitle(post.title);
+    setEditedBody(post.body);
   };
 
-  const handleDelete = (e, postId) => {
+  const handleSave = id => {
+    setErrors({});
+
+    const newErrors = {};
+
+    if (!editedTitle.length) {
+      newErrors.title = 'Title is required';
+    } else if (editedTitle.length < 5) {
+      newErrors.title = 'Title must be at least 5 characters';
+    } else if (editedTitle.length > 50) {
+      newErrors.title = 'Title cannot be more than 50 characters';
+    }
+
+    if (!editedBody.length) {
+      newErrors.editingBody = 'Post editingBody is required';
+    } else if (editedBody.length < 10) {
+      newErrors.body = 'Post must be at least 10 characters';
+    } else if (editedBody.length > 500) {
+      newErrors.body = 'Post cannot be more than 500 characters';
+    }
+
+    if (!errors.title && !errors.body) {
+      try {
+        fetcher.submit(
+          { id, title: editedTitle, body: editedBody },
+          { method: 'PUT', action: '/edit' }
+        );
+      } catch (err) {
+        console.error(err);
+        setErrors(err);
+      }
+    }
+
+    setEditingPostId(-1);
+  };
+
+  const handleDelete = (e, id) => {
     e.preventDefault();
 
     if (window.confirm('Are you sure you want to delete this post?')) {
-      fetcher.submit(
-        { id: postId, _action: 'DELETE' },
-        { method: 'POST', action: '/' }
-      );
+      fetcher.submit({ id }, { method: 'DELETE', action: '/delete' });
     }
   };
 
@@ -27,34 +67,73 @@ export default function AllPosts({ posts }) {
 
       {posts.length &&
         posts.map(post => (
-          <Link
-            to={`/post/${post.id}`}
+          <div
             key={post.id}
+            className='card flex flex-col'
           >
-            <div className='card flex flex-col'>
-              <h3 className='font-bold underline'>{post.title}</h3>
+            {editingPostId === post.id ?
+              <div className='flex flex-col gap-4'>
+                <input
+                  type='text'
+                  value={editedTitle}
+                  onChange={e => setEditedTitle(e.target.value)}
+                  className='rounded-lg border border-gray-400 bg-white p-3'
+                />
+                {errors.title && <p className='text-red-500'>{errors.title}</p>}
 
-              <p className='text-sm'>{post.body}</p>
+                <textarea
+                  value={editedBody}
+                  onChange={e => setEditedBody(e.target.value)}
+                  rows={5}
+                  className='rounded-lg border border-gray-400 bg-white p-3'
+                />
+                {errors.body && <p className='text-red-500'>{errors.body}</p>}
 
-              {user && user.id === post.user_id && (
+                {errors.message && (
+                  <p className='text-red-500'>{errors.message}</p>
+                )}
                 <div className='space-x-3 self-end'>
                   <button
-                    onClick={e => handleEdit(e, post.id)}
-                    className='btn-edit'
+                    onClick={() => handleSave(post.id)}
+                    className='btn-save'
                   >
-                    Edit
+                    Save
                   </button>
 
                   <button
-                    onClick={e => handleDelete(e, post.id)}
+                    onClick={() => setEditingPostId(null)}
                     className='btn-delete'
                   >
-                    Delete
+                    Cancel
                   </button>
                 </div>
-              )}
-            </div>
-          </Link>
+              </div>
+            : <Link to={`/post/${post.id}`}>
+                <h3 className='font-bold underline'>{post.title}</h3>
+                <p className='text-sm'>{post.body}</p>
+
+                <div className='flex flex-col'>
+                  {user && user.id === post.user_id && (
+                    <div className='space-x-3 self-end'>
+                      <button
+                        onClick={e => handleEdit(e, post)}
+                        className='btn-edit'
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        onClick={e => handleDelete(e, post.id)}
+                        className='btn-delete'
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </Link>
+            }
+          </div>
         ))}
     </div>
   );

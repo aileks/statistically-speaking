@@ -14,48 +14,7 @@ export const router = createBrowserRouter([
         element: <Index />,
         loader: async () => {
           const res = await fetch('/api/posts');
-          const data = await res.json();
-          return data;
-        },
-        action: async ({ request }) => {
-          try {
-            const formData = await request.formData();
-            const { _action, ...postData } = Object.fromEntries(formData);
-
-            if (_action === 'DELETE') {
-              const res = await fetch(`/api/posts/${postData.id}`, {
-                method: 'DELETE',
-              });
-
-              if (!res.ok) {
-                const errorData = await res.json();
-                console.error('Error deleting post:', errorData);
-                return { error: errorData };
-              }
-
-              return { success: true, message: 'Post deleted successfully' };
-            } else {
-              const res = await fetch('/api/posts', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(postData),
-              });
-
-              if (!res.ok) {
-                const errorData = await res.json();
-                console.error('Error creating post:', errorData);
-                return { error: errorData };
-              }
-
-              const newPost = await res.json();
-              return { success: true, post: newPost };
-            }
-          } catch (error) {
-            console.error('Error in post action:', error);
-            return { error: { message: 'An unexpected error occurred' } };
-          }
+          return res.json();
         },
       },
       {
@@ -72,8 +31,60 @@ export const router = createBrowserRouter([
         loader: async ({ params }) => {
           const { postId } = params;
           const res = await fetch(`/api/posts/${postId}`);
-          const data = await res.json();
-          return data;
+          return res.json();
+        },
+      },
+      {
+        path: '/new',
+        action: async ({ request }) => {
+          const formData = await request.formData();
+
+          try {
+            const res = await fetch('/api/posts', {
+              method: 'POST',
+              body: formData,
+            });
+
+            return res.json();
+          } catch (err) {
+            console.error('Error in post action:', err);
+            return err;
+          }
+        },
+      },
+      {
+        path: '/delete',
+        action: async ({ request }) => {
+          const formData = await request.formData();
+
+          try {
+            const res = await fetch(`/api/posts/${formData.get('id')}`, {
+              method: 'DELETE',
+            });
+
+            return res.json();
+          } catch (err) {
+            console.error('Error in post action:', err);
+            return err;
+          }
+        },
+      },
+      {
+        path: '/edit',
+        action: async ({ request }) => {
+          const formData = await request.formData();
+
+          try {
+            const res = await fetch(`/api/posts/${formData.get('id')}`, {
+              method: 'PUT',
+              body: formData,
+            });
+
+            return res.json();
+          } catch (err) {
+            console.error('Error in post action:', err);
+            return err;
+          }
         },
       },
     ],
