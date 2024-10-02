@@ -45,7 +45,7 @@ export default function AllPosts({ posts }) {
                 <div className='flex flex-col'>
                   {user && (
                     <>
-                      {user.id !== post.user_id ?
+                      {user.id !== post.userId ?
                         <SaveIcon
                           fetcher={fetcher}
                           post={post}
