@@ -10,7 +10,9 @@ posts = Blueprint("posts", __name__)
 
 @posts.route("")
 def get_posts() -> list[dict[str, str]]:
-    all_posts: list[Post] = Post.query.order_by(Post.created_at.desc()).all()
+    all_posts: list[Post] = Post.query.order_by(
+        Post.created_at.desc(), Post.id.desc()
+    ).all()
     return [post.to_dict() for post in all_posts]
 
 

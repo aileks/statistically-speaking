@@ -19,14 +19,16 @@ export const router = createBrowserRouter([
         },
         action: async ({ request }) => {
           const formData = await request.formData();
-          const postData = Object.fromEntries(formData);
 
           const res = await fetch('/api/posts', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(postData),
+            body: JSON.stringify({
+              title: formData.get('title'),
+              body: formData.get('body'),
+            }),
           });
 
           if (!res.ok) {
