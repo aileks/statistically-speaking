@@ -1,9 +1,13 @@
-import { useFetcher, useLoaderData } from 'react-router-dom';
+import { useFetcher, useLoaderData, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import EditPost from './EditPost';
 import { useState } from 'react';
+import SaveIcon from '../SaveIcon';
+import { useToast } from '../../context/Toast';
 
 export default function Post() {
+  const { addToast } = useToast();
+  const navigate = useNavigate();
   const post = useLoaderData();
   const fetcher = useFetcher();
   const user = useSelector(state => state.session.user);
@@ -19,6 +23,9 @@ export default function Post() {
 
     if (window.confirm('Are you sure you want to delete this post?')) {
       fetcher.submit({ id }, { method: 'DELETE', action: '/delete' });
+      addToast('Post deleted successfully!');
+      fetcher.load('/');
+      navigate('/');
     }
   };
 
@@ -36,22 +43,31 @@ export default function Post() {
 
             <p className='text-lg'>{post.body}</p>
 
-            {user && user.id === post.user_id && (
-              <div className='self-end space-x-3'>
-                <button
-                  onClick={e => handleEdit(e, post)}
-                  className='btn-edit'
-                >
-                  Edit
-                </button>
+            {user && (
+              <>
+                {user.id !== post.userId ?
+                  <SaveIcon
+                    fetcher={fetcher}
+                    post={post}
+                    user={user}
+                  />
+                : <div className='self-end space-x-3'>
+                    <button
+                      onClick={e => handleEdit(e, post)}
+                      className='btn-edit'
+                    >
+                      Edit
+                    </button>
 
-                <button
-                  onClick={e => handleDelete(e, post.id)}
-                  className='btn-delete'
-                >
-                  Delete
-                </button>
-              </div>
+                    <button
+                      onClick={e => handleDelete(e, post.id)}
+                      className='btn-delete'
+                    >
+                      Delete
+                    </button>
+                  </div>
+                }
+              </>
             )}
           </>
         }

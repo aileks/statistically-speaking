@@ -7,7 +7,7 @@ export default function SaveIcon({ user, post, fetcher }) {
   );
 
   useEffect(() => {
-    if (fetcher.state === 'idle' && fetcher.data) {
+    if (fetcher.state === 'idle' && fetcher.data && !fetcher.data.message) {
       const updatedSaves = fetcher.data;
       setIsSaved(updatedSaves.some(save => save.postId === post.id));
     }
@@ -40,11 +40,11 @@ export default function SaveIcon({ user, post, fetcher }) {
   return (
     <div
       onClick={e => handleSave(e)}
-      className='flex'
+      className='flex max-w-fit cursor-pointer'
     >
       {isSaved ?
-        <FaBookmark className='text-amber-600 transition-colors duration-200 ease-in-out hover:text-amber-700' />
-      : <FaRegBookmark className='text-amber-600 transition-colors duration-200 ease-in-out hover:text-amber-700' />
+        <FaBookmark className='text-lg text-amber-600 transition-colors duration-200 ease-in-out hover:text-amber-700' />
+      : <FaRegBookmark className='text-lg text-amber-600 transition-colors duration-200 ease-in-out hover:text-amber-700' />
       }
     </div>
   );
