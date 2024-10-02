@@ -31,7 +31,7 @@ export default function PostForm() {
 
     setErrors(newErrors);
 
-    if (!errors.title && !errors.body) {
+    if (Object.keys(newErrors).length === 0) {
       try {
         fetcher.submit({ title, body }, { method: 'POST', action: '/new' });
         setBody('');

@@ -10,6 +10,9 @@ export default function AllPosts({ posts }) {
   const [editedBody, setEditedBody] = useState('');
   const [errors, setErrors] = useState({});
 
+  console.log(editedTitle);
+  console.log(editedBody);
+
   const handleEdit = (e, post) => {
     e.preventDefault();
     setEditingPostId(post.id);
@@ -31,14 +34,16 @@ export default function AllPosts({ posts }) {
     }
 
     if (!editedBody.length) {
-      newErrors.editingBody = 'Post editingBody is required';
+      newErrors.body = 'Post editingBody is required';
     } else if (editedBody.length < 10) {
       newErrors.body = 'Post must be at least 10 characters';
     } else if (editedBody.length > 500) {
       newErrors.body = 'Post cannot be more than 500 characters';
     }
 
-    if (!errors.title && !errors.body) {
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
       try {
         fetcher.submit(
           { id, title: editedTitle, body: editedBody },
@@ -46,11 +51,11 @@ export default function AllPosts({ posts }) {
         );
       } catch (err) {
         console.error(err);
-        setErrors(err);
+        setErrors({ message: err });
       }
-    }
 
-    setEditingPostId(-1);
+      setEditingPostId(-1);
+    }
   };
 
   const handleDelete = (e, id) => {
@@ -79,7 +84,9 @@ export default function AllPosts({ posts }) {
                   onChange={e => setEditedTitle(e.target.value)}
                   className='rounded-lg border border-gray-400 bg-white p-3'
                 />
-                {errors.title && <p className='text-red-500'>{errors.title}</p>}
+                {errors.title && (
+                  <p className='text-red-500 text-sm italic'>{errors.title}</p>
+                )}
 
                 <textarea
                   value={editedBody}
@@ -87,11 +94,16 @@ export default function AllPosts({ posts }) {
                   rows={5}
                   className='rounded-lg border border-gray-400 bg-white p-3'
                 />
-                {errors.body && <p className='text-red-500'>{errors.body}</p>}
+                {errors.body && (
+                  <p className='text-red-500 text-sm italic'>{errors.body}</p>
+                )}
 
                 {errors.message && (
-                  <p className='text-red-500'>{errors.message}</p>
+                  <p className='text-red-500 text-sm italic'>
+                    {errors.message}
+                  </p>
                 )}
+
                 <div className='space-x-3 self-end'>
                   <button
                     onClick={() => handleSave(post.id)}
