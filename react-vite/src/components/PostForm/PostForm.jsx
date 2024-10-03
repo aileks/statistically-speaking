@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFetcher } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -10,20 +10,24 @@ export default function PostForm() {
   const [errors, setErrors] = useState({});
   const [csvFile, setCsvFile] = useState(null);
   const [graphType, setGraphType] = useState('table');
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     if (fetcher.data && fetcher.data.message) {
-      setErrors({ message: fetcher.data.message });
+      setErrors(() => ({ ...errors, message: fetcher.data.message }));
     } else {
       setTitle('');
       setBody('');
       setCsvFile(null);
       setGraphType('table');
+      setErrors({});
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   }, [fetcher.data]);
 
   const handleErrors = () => {
-    setErrors({});
     const newErrors = {};
 
     if (!title.length) {
@@ -47,6 +51,8 @@ export default function PostForm() {
     } else if (!csvFile.name.endsWith('.csv')) {
       newErrors.csvFile = 'File must be a CSV';
     }
+
+    return newErrors;
   };
 
   const handleFileChange = e => {
@@ -55,27 +61,31 @@ export default function PostForm() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    handleErrors();
+    setErrors({});
+    const newErrors = handleErrors();
 
-    if (Object.keys(errors).length === 0) {
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('body', body);
-      formData.append('csv_file', csvFile);
-      formData.append('graph_type', graphType);
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
-      try {
-        await fetcher.submit(formData, {
-          method: 'POST',
-          action: '/new',
-          encType: 'multipart/form-data',
-        });
-      } catch (err) {
-        console.error(err);
-        setErrors({
-          message: err.message || 'An error occurred while creating the post',
-        });
-      }
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('body', body);
+    formData.append('csv_file', csvFile);
+    formData.append('graph_type', graphType);
+
+    try {
+      await fetcher.submit(formData, {
+        method: 'POST',
+        action: '/new',
+        encType: 'multipart/form-data',
+      });
+    } catch (err) {
+      console.error(err);
+      setErrors({
+        message: err.message || 'An error occurred while creating the post',
+      });
     }
   };
 
@@ -126,6 +136,7 @@ export default function PostForm() {
             accept='.csv'
             required
             className='rounded-lg border border-gray-400 bg-white p-3'
+            ref={fileInputRef}
           />
 
           <span className='font-semibold mt-2 text-xs text-orange-600 self-center italic'>
