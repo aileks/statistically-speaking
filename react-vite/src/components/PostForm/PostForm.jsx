@@ -19,16 +19,16 @@ export default function PostForm() {
       newErrors.title = 'Title is required';
     } else if (title.length < 5) {
       newErrors.title = 'Title must be at least 5 characters';
-    } else if (title.length > 50) {
-      newErrors.title = 'Title cannot be more than 50 characters';
+    } else if (title.length > 100) {
+      newErrors.title = 'Title cannot be more than 100 characters';
     }
 
     if (!body.length) {
       newErrors.body = 'Post body is required';
-    } else if (body.length < 10) {
-      newErrors.body = 'Post must be at least 10 characters';
-    } else if (body.length > 500) {
-      newErrors.body = 'Post cannot be more than 500 characters';
+    } else if (body.length < 20) {
+      newErrors.body = 'Post must be at least 20 characters';
+    } else if (body.length > 1500) {
+      newErrors.body = 'Post cannot be more than 1500 characters';
     }
 
     setErrors(newErrors);
