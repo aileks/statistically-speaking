@@ -73,6 +73,7 @@ export default function PostForm() {
       if (!errors.message) {
         setBody('');
         setTitle('');
+        // FIXME: Not getting set to null
         setCsvFile(null);
       }
     }
