@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export default function EditPost({ post, fetcher, setEditingPostId }) {
-  const originalType = post.graph.type;
+  // const originalType = post.graph.type;
   const [editedTitle, setEditedTitle] = useState(post.title);
   const [editedBody, setEditedBody] = useState(post.body);
   const [editedType, setEditedType] = useState(post.graph.type);
@@ -9,8 +9,13 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
   const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
-    if (fetcher.state === 'idle' && fetcher.data && !fetcher.data.message) {
-      setEditingPostId(-1);
+    if (fetcher.state === 'idle' && fetcher.data) {
+      if (fetcher.data.message) {
+        setErrors({ message: fetcher.data.message });
+      } else {
+        setEditingPostId(-1);
+        fetcher.data = undefined;
+      }
     }
   }, [fetcher.data, fetcher.state, setEditingPostId]);
 
@@ -37,13 +42,13 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
       newErrors.body = 'Post cannot be more than 1500 characters';
     }
 
-    if (
-      originalType === 'table' &&
-      (editedType === 'bar' || editedType === 'line')
-    ) {
-      newErrors.type =
-        "Graphs of type 'Bar' or 'Line' must have only two (2) columns";
-    }
+    // if (
+    //   originalType === 'table' &&
+    //   (editedType === 'bar' || editedType === 'line')
+    // ) {
+    //   newErrors.type =
+    //     "Graphs of type 'Bar' or 'Line' must have only two (2) columns";
+    // }
 
     return newErrors;
   };
@@ -106,12 +111,12 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
         </select>
       </label>
 
-      {errors.type && (
-        <p className='text-sm italic text-red-500'>{errors.type}</p>
-      )}
-      {/*{errors.message && (*/}
-      {/*  <p className='text-sm italic text-red-500'>{errors.message}</p>*/}
+      {/*{errors.type && (*/}
+      {/*  <p className='text-sm italic text-red-500'>{errors.type}</p>*/}
       {/*)}*/}
+      {errors.message && (
+        <p className='text-sm italic text-red-500'>{errors.message}</p>
+      )}
 
       <div className='self-end space-x-3'>
         <button
