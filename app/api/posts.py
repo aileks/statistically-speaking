@@ -90,6 +90,7 @@ def create_post() -> Union[dict[str, str], tuple[dict[str, str], int]]:
 @posts.route("<int:post_id>", methods=["PUT"])
 def update_post(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int]]:
     updated_post: Post = Post.query.get(post_id)
+    updated_graph: Graph = Graph.query.filter_by(post_id=post_id).first()
 
     if not updated_post:
         return {"error": "Post not found"}, 404
@@ -99,8 +100,15 @@ def update_post(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int
 
     updated_post.title = request.form.get("title")
     updated_post.body = request.form.get("body")
+    updated_graph.type = request.form.get("graph_type")
 
-    db.session.add(updated_post)
+    graph_data_ok = check_data(updated_graph)
+    if not graph_data_ok:
+        db.session.rollback()
+        return {
+            "message": "Graphs of type 'Bar' or 'Line' must have only two (2) columns"
+        }, 400
+
     db.session.commit()
 
     return updated_post.to_dict()

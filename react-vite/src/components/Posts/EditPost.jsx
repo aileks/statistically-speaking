@@ -1,10 +1,18 @@
 import { useEffect, useState } from 'react';
 
 export default function EditPost({ post, fetcher, setEditingPostId }) {
+  const originalType = post.graph.type;
   const [editedTitle, setEditedTitle] = useState(post.title);
   const [editedBody, setEditedBody] = useState(post.body);
+  const [editedType, setEditedType] = useState(post.graph.type);
   const [errors, setErrors] = useState({});
   const [disabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    if (fetcher.state === 'idle' && fetcher.data && !fetcher.data.message) {
+      setEditingPostId(-1);
+    }
+  }, [fetcher.data, fetcher.state, setEditingPostId]);
 
   useEffect(() => {
     if (editedBody === '' || editedTitle === '') {
@@ -14,9 +22,7 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
     }
   }, [editedBody, editedTitle]);
 
-  const handleSave = id => {
-    setErrors({});
-
+  const handleErrors = () => {
     const newErrors = {};
 
     if (!editedTitle.length) {
@@ -35,20 +41,37 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
       newErrors.body = 'Post cannot be more than 1500 characters';
     }
 
-    setErrors(newErrors);
+    if (
+      originalType === 'table' &&
+      (editedType === 'bar' || editedType === 'line')
+    ) {
+      setErrors({
+        message: "Graphs of type 'Bar' or 'Line' can have only two (2) columns",
+      });
+    }
 
-    if (Object.keys(newErrors).length === 0) {
-      try {
-        fetcher.submit(
-          { id, title: editedTitle, body: editedBody },
-          { method: 'PUT', action: '/edit' }
-        );
-      } catch (err) {
-        console.error(err);
-        setErrors({ message: err });
-      }
+    return newErrors;
+  };
 
-      setEditingPostId(-1);
+  const handleUpdate = async id => {
+    setErrors({});
+    const newErrors = handleErrors();
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    try {
+      await fetcher.submit(
+        { id, title: editedTitle, body: editedBody, graph_type: editedType },
+        { method: 'PUT', action: '/edit' }
+      );
+    } catch (err) {
+      console.error(err);
+      setErrors({
+        message: err.message || 'An error occurred while creating the post',
+      });
     }
   };
 
@@ -75,13 +98,26 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
         <p className='text-sm italic text-red-500'>{errors.body}</p>
       )}
 
+      <label>
+        Graph Type:
+        <select
+          value={editedType}
+          onChange={e => setEditedType(e.target.value)}
+          className='rounded-lg border border-gray-400 bg-white px-1 ml-2'
+        >
+          <option value='table'>Table</option>
+          <option value='bar'>Bar</option>
+          <option value='line'>Line</option>
+        </select>
+      </label>
+
       {errors.message && (
         <p className='text-sm italic text-red-500'>{errors.message}</p>
       )}
 
       <div className='self-end space-x-3'>
         <button
-          onClick={() => handleSave(post.id)}
+          onClick={() => handleUpdate(post.id)}
           className='btn-save disabled:cursor-not-allowed disabled:opacity-50'
           disabled={disabled}
         >
@@ -89,7 +125,7 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
         </button>
 
         <button
-          onClick={() => setEditingPostId(null)}
+          onClick={() => setEditingPostId(-1)}
           className='btn-delete'
         >
           Cancel
