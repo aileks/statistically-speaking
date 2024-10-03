@@ -1,4 +1,4 @@
-export function LineGraph({ data }) {
+export default function LineGraph({ data }) {
   console.log(data);
   const columns = data.columns;
   const rows = data.rows;

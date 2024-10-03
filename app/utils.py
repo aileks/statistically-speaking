@@ -10,6 +10,6 @@ def get_data(graph: dict[str, str]) -> dict[str, list]:
         dict: A dictionary representation of the first 10 rows of the CSV file,
               structured in a split format with columns and data.
     """
-    df: pd.DataFrame = pd.read_csv(graph["url"], nrows=10)
+    df: pd.DataFrame = pd.read_csv(graph["url"])
     data: dict[str, list] = df.to_dict("split")
     return data

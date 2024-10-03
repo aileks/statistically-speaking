@@ -1,4 +1,4 @@
-export function Table({ data }) {
+export default function Table({ data }) {
   const columns = data.columns;
   const rows = data.data;
 

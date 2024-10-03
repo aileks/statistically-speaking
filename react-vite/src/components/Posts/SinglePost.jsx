@@ -5,9 +5,9 @@ import { useState } from 'react';
 import SaveIcon from '../SaveIcon';
 import { useToast } from '../../context/Toast';
 import NotFound from '../404.jsx';
-import { Table } from '../Graphs/Table.jsx';
-import { LineGraph } from '../Graphs/LineGraph.jsx';
-import { BarGraph } from '../Graphs/BarGraph.jsx';
+import Table from '../Graphs/Table';
+import LineGraph from '../Graphs/LineGraph';
+import BarGraph from '../Graphs/BarGraph';
 
 export default function SinglePost() {
   const { addToast } = useToast();
