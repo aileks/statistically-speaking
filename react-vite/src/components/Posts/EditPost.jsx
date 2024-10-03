@@ -15,11 +15,7 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
   }, [fetcher.data, fetcher.state, setEditingPostId]);
 
   useEffect(() => {
-    if (editedBody === '' || editedTitle === '') {
-      setDisabled(true);
-    } else {
-      setDisabled(false);
-    }
+    setDisabled(editedBody === '' || editedTitle === '');
   }, [editedBody, editedTitle]);
 
   const handleErrors = () => {
@@ -45,9 +41,8 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
       originalType === 'table' &&
       (editedType === 'bar' || editedType === 'line')
     ) {
-      setErrors({
-        message: "Graphs of type 'Bar' or 'Line' can have only two (2) columns",
-      });
+      newErrors.type =
+        "Graphs of type 'Bar' or 'Line' must have only two (2) columns";
     }
 
     return newErrors;
@@ -111,9 +106,12 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
         </select>
       </label>
 
-      {errors.message && (
-        <p className='text-sm italic text-red-500'>{errors.message}</p>
+      {errors.type && (
+        <p className='text-sm italic text-red-500'>{errors.type}</p>
       )}
+      {/*{errors.message && (*/}
+      {/*  <p className='text-sm italic text-red-500'>{errors.message}</p>*/}
+      {/*)}*/}
 
       <div className='self-end space-x-3'>
         <button

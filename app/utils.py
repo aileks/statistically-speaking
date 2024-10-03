@@ -24,8 +24,8 @@ def check_data(graph: dict[str, str]) -> bool:
         bool: True if the data is valid, False otherwise.
     """
     if graph.type == "line" or graph.type == "bar":
-        df: pd.DataFrame = pd.read_csv(graph.url)
-        if len(df.columns) != 2:
+        df: dict[str, list] = pd.read_csv(graph.url).to_dict("split")
+        if len(df["columns"]) != 2:
             return False
 
     return True
