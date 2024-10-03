@@ -1,9 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
-import LoginFormPage from '../components/LoginFormPage';
-import SignupFormPage from '../components/SignupFormPage';
 import Layout from './Layout';
+import Error from '../components/Error';
 import Index from '../components/Index';
-import Post from '../components/Posts/';
+import SinglePost from '../components/Posts/SinglePost';
 
 export const router = createBrowserRouter([
   {
@@ -18,16 +17,8 @@ export const router = createBrowserRouter([
         },
       },
       {
-        path: 'login',
-        element: <LoginFormPage />,
-      },
-      {
-        path: 'signup',
-        element: <SignupFormPage />,
-      },
-      {
         path: 'post/:postId',
-        element: <Post />,
+        element: <SinglePost />,
         loader: async ({ params }) => {
           const { postId } = params;
           const res = await fetch(`/api/posts/${postId}`);
@@ -126,6 +117,10 @@ export const router = createBrowserRouter([
             return err;
           }
         },
+      },
+      {
+        path: '*',
+        element: <Error />,
       },
     ],
   },
