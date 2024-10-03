@@ -66,7 +66,12 @@ function ProfileButton() {
                 onClick={closeMenu}
                 className='w-fit'
               >
-                <Link to='/profile'>Profile</Link>
+                <Link
+                  className='text-blue-600 hover:text-blue-800 transition-colors duration-200'
+                  to='/profile'
+                >
+                  View Saved Posts
+                </Link>
               </li>
 
               <li className='mt-2'>

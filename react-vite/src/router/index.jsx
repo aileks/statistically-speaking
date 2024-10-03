@@ -4,6 +4,7 @@ import NotFound from '../components/404.jsx';
 import ErrorBoundary from './ErrorBoundary.jsx';
 import Index from '../components/Index';
 import SinglePost from '../components/Posts/SinglePost';
+import Profile from '../components/Profile/index.js';
 
 export const router = createBrowserRouter([
   {
@@ -28,8 +29,12 @@ export const router = createBrowserRouter([
         },
       },
       {
-        path: 'graphs',
-        loader: async () => {},
+        path: '/profile',
+        element: <Profile />,
+        loader: async () => {
+          const res = await fetch('/api/posts');
+          return res.json();
+        },
       },
       {
         path: 'new',

@@ -41,11 +41,11 @@ export default function AllPosts({ posts }) {
                 post={post}
                 fetcher={fetcher}
               />
-            : <Link to={`/post/${post.id}`}>
-                <h3 className='font-bold underline'>{post.title}</h3>
-                <p className='text-sm'>{post.body}</p>
-
-                <div className='flex flex-col'>
+            : <Link
+                className='flex flex-col'
+                to={`/post/${post.id}`}
+              >
+                <div className='self-end'>
                   {user && (
                     <>
                       {user.id !== post.userId ?
@@ -72,6 +72,10 @@ export default function AllPosts({ posts }) {
                     </>
                   )}
                 </div>
+
+                <h3 className='font-bold underline'>{post.title}</h3>
+
+                <p className='text-sm'>{post.body}</p>
               </Link>
             }
           </div>
