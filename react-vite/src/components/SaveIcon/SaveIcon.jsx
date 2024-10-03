@@ -3,7 +3,6 @@ import { useFetcher } from 'react-router-dom';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 
 export default function SaveIcon({ user, post }) {
-  console.log(post);
   const fetcher = useFetcher();
   const [isSaved, setIsSaved] = useState(
     post.saves.some(save => save.userId === user.id)
