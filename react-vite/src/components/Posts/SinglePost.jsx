@@ -4,14 +4,17 @@ import EditPost from './EditPost';
 import { useState } from 'react';
 import SaveIcon from '../SaveIcon';
 import { useToast } from '../../context/Toast';
+import NotFound from '../404.jsx';
 
-export default function Post() {
+export default function SinglePost() {
   const { addToast } = useToast();
   const navigate = useNavigate();
   const post = useLoaderData();
   const fetcher = useFetcher();
   const user = useSelector(state => state.session.user);
   const [editingPostId, setEditingPostId] = useState(-1);
+
+  console.log(post);
 
   const handleEdit = (e, post) => {
     e.preventDefault();
@@ -28,6 +31,8 @@ export default function Post() {
       navigate('/');
     }
   };
+
+  if (post.error === 'Post not found') return <NotFound />;
 
   return (
     <div className='container'>

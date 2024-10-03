@@ -1,12 +1,14 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from './Layout';
-import Error from '../components/Error';
+import NotFound from '../components/404.jsx';
+import ErrorBoundary from './ErrorBoundary.jsx';
 import Index from '../components/Index';
 import SinglePost from '../components/Posts/SinglePost';
 
 export const router = createBrowserRouter([
   {
     element: <Layout />,
+    errorElement: <ErrorBoundary />,
     children: [
       {
         path: '/',
@@ -120,7 +122,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '*',
-        element: <Error />,
+        element: <NotFound />,
       },
     ],
   },

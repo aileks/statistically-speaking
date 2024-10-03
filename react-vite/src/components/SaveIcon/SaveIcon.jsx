@@ -5,14 +5,14 @@ import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 export default function SaveIcon({ user, post }) {
   const fetcher = useFetcher();
   const [isSaved, setIsSaved] = useState(
-    post.saves.some(save => save.userId === user.id)
+    post?.saves.some(save => save.userId === user.id)
   );
 
   useEffect(() => {
     if (fetcher.state === 'idle' && fetcher.data && !fetcher.data.message) {
       setIsSaved(fetcher.data.some(save => save.userId === user.id));
     }
-  }, [fetcher.state, fetcher.data, post.id]);
+  }, [fetcher.state, fetcher.data, user.id]);
 
   const handleSave = async e => {
     e.preventDefault();
