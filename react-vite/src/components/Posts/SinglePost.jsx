@@ -14,8 +14,6 @@ export default function SinglePost() {
   const user = useSelector(state => state.session.user);
   const [editingPostId, setEditingPostId] = useState(-1);
 
-  console.log(post);
-
   const handleEdit = (e, post) => {
     e.preventDefault();
     setEditingPostId(post.id);

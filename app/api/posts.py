@@ -87,6 +87,7 @@ def update_post(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int
 @posts.route("/<int:post_id>", methods=["DELETE"])
 def delete_post(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int]]:
     post: Post = Post.query.get(post_id)
+    graph: Graph = Graph.query.filter_by(post_id=post_id).first()
 
     if not post:
         return {"error": "Post not found"}, 404
@@ -94,6 +95,8 @@ def delete_post(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int
     if post.user_id != current_user.id or not current_user:
         return {"error": "Unauthorized"}, 401
 
+    db.session.delete(graph)
+    db.session.commit()
     db.session.delete(post)
     db.session.commit()
 

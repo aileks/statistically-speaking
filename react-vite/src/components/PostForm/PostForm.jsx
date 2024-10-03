@@ -42,7 +42,7 @@ export default function PostForm() {
     setCsvFile(e.target.files[0]);
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = e => {
     e.preventDefault();
     handleErrors();
 
@@ -54,24 +54,26 @@ export default function PostForm() {
       formData.append('graph_type', graphType);
 
       try {
-        await fetcher.submit(formData, {
+        fetcher.submit(formData, {
           method: 'POST',
           action: '/new',
           encType: 'multipart/form-data',
         });
 
-        setErrors({ message: fetcher.data?.message });
-
-        if (!errors.message) {
-          setBody('');
-          setTitle('');
-          setCsvFile(null);
+        if (fetcher.data && fetcher.data?.message) {
+          setErrors({ message: fetcher.data.message });
         }
       } catch (err) {
         console.error(err);
         setErrors({
           message: err.message || 'An error occurred while creating the post',
         });
+      }
+
+      if (!errors.message) {
+        setBody('');
+        setTitle('');
+        setCsvFile(null);
       }
     }
   };
