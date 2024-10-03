@@ -5,6 +5,7 @@ import { thunkLogout } from '../../redux/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
+import { Link } from 'react-router-dom';
 
 function ProfileButton() {
   const dispatch = useDispatch();
@@ -60,6 +61,14 @@ function ProfileButton() {
                 Hello, {user.username}!
               </li>
               <li className='text-gray-600'>{user.email}</li>
+
+              <li
+                onClick={closeMenu}
+                className='w-fit'
+              >
+                <Link to='/profile'>Profile</Link>
+              </li>
+
               <li className='mt-2'>
                 <button
                   onClick={logout}
