@@ -43,6 +43,7 @@ class Post(db.Model):
             "body": self.body,
             "userId": self.user_id,
             "saves": [save.to_dict() for save in self.saves],
+            "graph": self.graph.to_dict() if self.graph else None,
             "createdAt": self.created_at,
             "updatedAt": self.updated_at,
         }

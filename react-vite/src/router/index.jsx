@@ -32,17 +32,17 @@ export const router = createBrowserRouter([
         action: async ({ request }) => {
           const formData = await request.formData();
 
-          try {
-            const res = await fetch('/api/posts', {
-              method: 'POST',
-              body: formData,
-            });
+          console.log(
+            'DATA TYPE OF CSV FILE IN ROUTER',
+            formData.get('csv_file')
+          );
 
-            return res.json();
-          } catch (err) {
-            console.error('Error in post action:', err);
-            return err;
-          }
+          const res = await fetch('/api/posts', {
+            method: 'POST',
+            body: formData,
+          });
+
+          return res.json();
         },
       },
       {
@@ -50,16 +50,11 @@ export const router = createBrowserRouter([
         action: async ({ request }) => {
           const formData = await request.formData();
 
-          try {
-            const res = await fetch(`/api/posts/${formData.get('id')}`, {
-              method: 'DELETE',
-            });
+          const res = await fetch(`/api/posts/${formData.get('id')}`, {
+            method: 'DELETE',
+          });
 
-            return res.json();
-          } catch (err) {
-            console.error('Error in post action:', err);
-            return err;
-          }
+          return res.json();
         },
       },
       {
@@ -67,17 +62,12 @@ export const router = createBrowserRouter([
         action: async ({ request }) => {
           const formData = await request.formData();
 
-          try {
-            const res = await fetch(`/api/posts/${formData.get('id')}`, {
-              method: 'PUT',
-              body: formData,
-            });
+          const res = await fetch(`/api/posts/${formData.get('id')}`, {
+            method: 'PUT',
+            body: formData,
+          });
 
-            return res.json();
-          } catch (err) {
-            console.error('Error in post action:', err);
-            return err;
-          }
+          return res.json();
         },
       },
       {
@@ -85,19 +75,11 @@ export const router = createBrowserRouter([
         action: async ({ request }) => {
           const formData = await request.formData();
 
-          try {
-            const res = await fetch(
-              `/api/posts/${formData.get('postId')}/save`,
-              {
-                method: 'POST',
-              }
-            );
+          const res = await fetch(`/api/posts/${formData.get('postId')}/save`, {
+            method: 'POST',
+          });
 
-            return res.json();
-          } catch (err) {
-            console.error('Error in save action:', err);
-            return err;
-          }
+          return res.json();
         },
       },
       {
@@ -105,19 +87,11 @@ export const router = createBrowserRouter([
         action: async ({ request }) => {
           const formData = await request.formData();
 
-          try {
-            const res = await fetch(
-              `/api/posts/${formData.get('postId')}/save`,
-              {
-                method: 'DELETE',
-              }
-            );
+          const res = await fetch(`/api/posts/${formData.get('postId')}/save`, {
+            method: 'DELETE',
+          });
 
-            return res.json();
-          } catch (err) {
-            console.error('Error in unsave action:', err);
-            return err;
-          }
+          return res.json();
         },
       },
       {

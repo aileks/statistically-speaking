@@ -3,7 +3,8 @@ from typing import Union
 from flask import Blueprint, request
 from flask_login import current_user
 
-from app.models import db, Post, Save
+from app.models import db, Post, Save, Graph
+from app.upload import upload_file_to_s3
 
 posts = Blueprint("posts", __name__)
 
@@ -27,24 +28,45 @@ def post_by_id(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int]
 
 
 @posts.route("", methods=["POST"])
-def update_post() -> Union[dict[str, str], tuple[dict[str, str], int]]:
+def create_post() -> Union[dict[str, str], tuple[dict[str, str], int]]:
     if not current_user:
         return {"error": "Unauthorized"}, 401
 
-    new_post: Post = Post(
-        title=request.form.get("title"),
-        body=request.form.get("body"),
+    title = request.form.get("title")
+    body = request.form.get("body")
+    graph_type = request.form.get("graph_type")
+    csv_file = request.files.get("csv_file")
+
+    if not title or not body or not csv_file:
+        return {"message": "Missing required fields"}, 400
+
+    if csv_file.filename.rsplit(".", 1)[1].lower() != "csv":
+        return {"message": "File must be a CSV"}, 400
+
+    # TODO: Implement get_unique_filename
+    # get_unique_filename(csv_file.filename)
+    upload_res = upload_file_to_s3(csv_file)
+
+    if "url" not in upload_res:
+        return upload_res, 400
+
+    new_post = Post(
+        title=title,
+        body=body,
         user_id=current_user.id,
     )
-
     db.session.add(new_post)
+    db.session.commit()
+
+    new_graph = Graph(url=upload_res["url"], type=graph_type, post_id=new_post.id)
+    db.session.add(new_graph)
     db.session.commit()
 
     return new_post.to_dict()
 
 
 @posts.route("<int:post_id>", methods=["PUT"])
-def create_post(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int]]:
+def update_post(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int]]:
     updated_post: Post = Post.query.get(post_id)
 
     if not updated_post:

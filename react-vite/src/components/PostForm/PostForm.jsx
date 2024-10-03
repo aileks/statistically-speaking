@@ -8,11 +8,11 @@ export default function PostForm() {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [errors, setErrors] = useState({});
+  const [csvFile, setCsvFile] = useState(null);
+  const [graphType, setGraphType] = useState('bar');
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const handleErrors = () => {
     setErrors({});
-
     const newErrors = {};
 
     if (!title.length) {
@@ -31,16 +31,47 @@ export default function PostForm() {
       newErrors.body = 'Post cannot be more than 1500 characters';
     }
 
-    setErrors(newErrors);
+    if (!csvFile) {
+      newErrors.csvFile = 'CSV file is required';
+    } else if (!csvFile.name.endsWith('.csv')) {
+      newErrors.csvFile = 'File must be a CSV';
+    }
+  };
 
-    if (Object.keys(newErrors).length === 0) {
+  const handleFileChange = e => {
+    setCsvFile(e.target.files[0]);
+  };
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    handleErrors();
+
+    if (Object.keys(errors).length === 0) {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('body', body);
+      formData.append('csv_file', csvFile);
+      formData.append('graph_type', graphType);
+
       try {
-        fetcher.submit({ title, body }, { method: 'POST', action: '/new' });
-        setBody('');
-        setTitle('');
+        await fetcher.submit(formData, {
+          method: 'POST',
+          action: '/new',
+          encType: 'multipart/form-data',
+        });
+
+        setErrors({ message: fetcher.data?.message });
+
+        if (!errors.message) {
+          setBody('');
+          setTitle('');
+          setCsvFile(null);
+        }
       } catch (err) {
         console.error(err);
-        setErrors(err);
+        setErrors({
+          message: err.message || 'An error occurred while creating the post',
+        });
       }
     }
   };
@@ -71,6 +102,27 @@ export default function PostForm() {
           className='rounded-lg border border-gray-400 bg-white p-3'
         />
         {errors.body && <p className='text-red-500'>{errors.body}</p>}
+
+        <label>
+          Graph Type:
+          <select
+            value={graphType}
+            onChange={e => setGraphType(e.target.value)}
+            className='rounded-lg border border-gray-400 bg-white px-1 ml-2'
+          >
+            <option value='bar'>Bar</option>
+            <option value='line'>Line</option>
+          </select>
+        </label>
+
+        <input
+          type='file'
+          onChange={handleFileChange}
+          accept='.csv'
+          required
+          className='rounded-lg border border-gray-400 bg-white p-3'
+        />
+        {errors.csvFile && <p className='text-red-500'>{errors.csvFile}</p>}
 
         {errors.message && <p className='text-red-500'>{errors.message}</p>}
 
