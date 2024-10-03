@@ -1,8 +1,9 @@
 from flask.cli import AppGroup
 
+from app.models.db import environment
+from .graphs import undo_graphs, seed_graphs
 from .posts import undo_posts, seed_posts
 from .users import seed_users, undo_users
-from app.models.db import environment
 
 # Creates a seed group to hold our commands
 # So we can type `flask seed --help`
@@ -19,8 +20,10 @@ def seed():
         # Make sure to add all your other model's undo functions below
         undo_users()
         undo_posts()
+        undo_graphs()
     seed_users()
     seed_posts()
+    seed_graphs()
     # Add other seed functions here
 
 
@@ -29,4 +32,5 @@ def seed():
 def undo():
     undo_users()
     undo_posts()
+    undo_graphs()
     # Add other undo functions here

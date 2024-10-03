@@ -31,8 +31,8 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
       newErrors.body = 'Post body is required';
     } else if (editedBody.length < 10) {
       newErrors.body = 'Post must be at least 10 characters';
-    } else if (editedBody.length > 500) {
-      newErrors.body = 'Post cannot be more than 500 characters';
+    } else if (editedBody.length > 1500) {
+      newErrors.body = 'Post cannot be more than 1500 characters';
     }
 
     setErrors(newErrors);

@@ -28,14 +28,13 @@ export const router = createBrowserRouter([
         },
       },
       {
-        path: '/new',
+        path: 'graphs',
+        loader: async () => {},
+      },
+      {
+        path: 'new',
         action: async ({ request }) => {
           const formData = await request.formData();
-
-          console.log(
-            'DATA TYPE OF CSV FILE IN ROUTER',
-            formData.get('csv_file')
-          );
 
           const res = await fetch('/api/posts', {
             method: 'POST',
@@ -46,7 +45,7 @@ export const router = createBrowserRouter([
         },
       },
       {
-        path: '/delete',
+        path: 'delete',
         action: async ({ request }) => {
           const formData = await request.formData();
 
@@ -58,7 +57,7 @@ export const router = createBrowserRouter([
         },
       },
       {
-        path: '/edit',
+        path: 'edit',
         action: async ({ request }) => {
           const formData = await request.formData();
 
@@ -71,7 +70,7 @@ export const router = createBrowserRouter([
         },
       },
       {
-        path: '/save',
+        path: 'save',
         action: async ({ request }) => {
           const formData = await request.formData();
 
@@ -83,7 +82,7 @@ export const router = createBrowserRouter([
         },
       },
       {
-        path: '/unsave',
+        path: 'unsave',
         action: async ({ request }) => {
           const formData = await request.formData();
 

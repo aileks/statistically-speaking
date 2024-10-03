@@ -1,5 +1,6 @@
 from typing import Union
 
+import pandas as pd
 from flask import Blueprint, request
 from flask_login import current_user
 
@@ -24,7 +25,16 @@ def post_by_id(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int]
     if not post:
         return {"error": "Post not found"}, 404
 
-    return post.to_dict()
+    post_data: dict[str, Union[int, str, list[dict]]] = post.to_dict()
+    graph: dict[str, Union[int, str]] = post.graph.to_dict()
+
+    try:
+        df = pd.read_csv(graph["url"], nrows=10)
+        post_data["dataframe"] = df.to_dict("split")
+    except Exception as e:
+        post_data["dataframe"] = str(e)
+
+    return post_data
 
 
 @posts.route("", methods=["POST"])

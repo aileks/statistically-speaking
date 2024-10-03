@@ -7,24 +7,24 @@ from app.models import db, Post, environment, SCHEMA
 
 def seed_posts() -> None:
     post1 = Post(
-        title="Data Science in the Modern Era",
-        body="In today's rapidly evolving digital landscape, data science is no longer just a niche field; it has become an integral part of almost every industry. Companies leverage data science to enhance decision-making, improve customer experiences, and drive innovation. From predictive analytics to data visualization, this post explores the transformative power of data science and how organizations are adapting to harness its potential. Join the conversation on how we can collectively navigate the challenges and opportunities that lie ahead in this exciting field.",
+        title="People and Their Jobs",
+        body="This rich dataset provides a fascinating glimpse into the diverse professional landscape, offering potential for in-depth studies on career trends, demographic shifts in various industries, and the evolving nature of the global workforce.",
         user_id=1,
         created_at=datetime.now(),
         updated_at=datetime.now(),
     )
 
     post2 = Post(
-        title="AI and Machine Learning",
-        body="Artificial intelligence and machine learning are revolutionizing healthcare in unprecedented ways. These technologies are not only improving diagnostic accuracy and patient care but also streamlining administrative processes and enabling personalized medicine. This post delves into various applications of AI and machine learning within the healthcare sector, highlighting success stories and ongoing research. Let's discuss how these advancements can enhance patient outcomes and what challenges we must overcome to fully integrate these technologies into everyday healthcare practices.",
+        title="Customer Locations",
+        body="The data points to urban centers as the dominant hubs for customer activity, with cities like New York, Los Angeles, and Chicago leading in both customer count and total purchases. Suburban and rural areas, while contributing lower overall sales, demonstrate steady purchasing trends. Notably, the data also indicates a growing trend of online purchases from traditionally underserved regions, suggesting that digital reach is expanding market potential beyond physical proximity. This trend opens opportunities for targeted marketing efforts in regions previously considered low-traffic areas.",
         user_id=2,
         created_at=datetime.now(),
         updated_at=datetime.now(),
     )
 
     post3 = Post(
-        title="Big Data Challenges",
-        body="The age of big data brings with it not just opportunities but significant challenges as well. As organizations collect vast amounts of data, they face hurdles related to data quality, storage, security, and compliance. This post takes a closer look at the common challenges encountered across various sectors, including finance, retail, and technology, and offers insights into potential solutions. Join us in discussing the best practices for managing big data effectively and how organizations can leverage these insights to stay ahead in a competitive landscape.",
+        title="Organizational Data",
+        body="The data provides insights into the growth trajectory of organizations over time, particularly in relation to employee count and revenue generation. Larger organizations exhibit a clear correlation between workforce size and revenue growth, with steady increases in both metrics over the years. Smaller firms, while experiencing slower growth, show more volatility in revenue fluctuations, suggesting that they may face greater challenges in scaling. The consistent upward trend in employee numbers among high-revenue firms points to the strategic importance of workforce expansion in driving organizational success.",
         user_id=3,
         created_at=datetime.now(),
         updated_at=datetime.now(),

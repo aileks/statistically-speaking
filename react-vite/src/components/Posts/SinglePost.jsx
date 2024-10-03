@@ -5,6 +5,9 @@ import { useState } from 'react';
 import SaveIcon from '../SaveIcon';
 import { useToast } from '../../context/Toast';
 import NotFound from '../404.jsx';
+import { Table } from '../Graphs/Table.jsx';
+import { LineGraph } from '../Graphs/LineGraph.jsx';
+import { BarGraph } from '../Graphs/BarGraph.jsx';
 
 export default function SinglePost() {
   const { addToast } = useToast();
@@ -13,6 +16,7 @@ export default function SinglePost() {
   const fetcher = useFetcher();
   const user = useSelector(state => state.session.user);
   const [editingPostId, setEditingPostId] = useState(-1);
+  const graphType = post?.graph?.type;
 
   const handleEdit = (e, post) => {
     e.preventDefault();
@@ -71,6 +75,10 @@ export default function SinglePost() {
                 }
               </>
             )}
+
+            {graphType === 'table' && <Table data={post.dataframe} />}
+            {graphType === 'bar' && <BarGraph data={post.dataframe} />}
+            {graphType === 'line' && <LineGraph data={post.dataframe} />}
           </>
         }
       </div>

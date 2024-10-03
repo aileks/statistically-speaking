@@ -9,7 +9,7 @@ export default function PostForm() {
   const [body, setBody] = useState('');
   const [errors, setErrors] = useState({});
   const [csvFile, setCsvFile] = useState(null);
-  const [graphType, setGraphType] = useState('bar');
+  const [graphType, setGraphType] = useState('table');
 
   const handleErrors = () => {
     setErrors({});
@@ -113,25 +113,34 @@ export default function PostForm() {
             onChange={e => setGraphType(e.target.value)}
             className='rounded-lg border border-gray-400 bg-white px-1 ml-2'
           >
+            <option value='table'>Table</option>
             <option value='bar'>Bar</option>
             <option value='line'>Line</option>
           </select>
         </label>
 
-        <input
-          type='file'
-          onChange={handleFileChange}
-          accept='.csv'
-          required
-          className='rounded-lg border border-gray-400 bg-white p-3'
-        />
+        <div className='flex flex-col'>
+          <input
+            type='file'
+            onChange={handleFileChange}
+            accept='.csv'
+            required
+            className='rounded-lg border border-gray-400 bg-white p-3'
+          />
+
+          <span className='font-semibold mt-2 text-xs text-orange-600 self-center italic'>
+            By uploading your data, you confirm that it has been cleaned and
+            that any discrepancies are solely due to the contents of the CSV
+            file.
+          </span>
+        </div>
         {errors.csvFile && <p className='text-red-500'>{errors.csvFile}</p>}
 
         {errors.message && <p className='text-red-500'>{errors.message}</p>}
 
         <button
           type='submit'
-          className='max-w-fit self-end btn'
+          className='max-w-fit mt-3 self-end btn'
         >
           Post
         </button>
