@@ -41,7 +41,7 @@ export const router = createBrowserRouter([
             body: formData,
           });
 
-          return res.json();
+          return await res.json();
         },
       },
       {

@@ -5,7 +5,7 @@ from flask_login import current_user
 
 from app.models import db, Post, Save, Graph
 from app.upload import upload_file_to_s3
-from app.utils import get_data
+from app.utils import get_data, check_data
 
 posts = Blueprint("posts", __name__)
 
@@ -61,12 +61,28 @@ def create_post() -> Union[dict[str, str], tuple[dict[str, str], int]]:
         body=body,
         user_id=current_user.id,
     )
-    db.session.add(new_post)
-    db.session.commit()
 
-    new_graph = Graph(url=upload_res["url"], type=graph_type, post_id=new_post.id)
-    db.session.add(new_graph)
-    db.session.commit()
+    new_graph = Graph(url=upload_res["url"], type=graph_type)
+
+    try:
+        db.session.add(new_post)
+        db.session.flush()  # Flush to get new_post.id for new_graph
+
+        new_graph.post_id = new_post.id
+
+        graph_data_ok = check_data(new_graph)
+        if not graph_data_ok:
+            db.session.rollback()
+            return {
+                "message": "Graphs of type 'Bar' or 'Line' must have only two (2) columns"
+            }, 400
+
+        db.session.add(new_graph)
+        db.session.commit()
+
+    except Exception as e:
+        db.session.rollback()
+        return {"message": str(e)}, 500
 
     return new_post.to_dict()
 

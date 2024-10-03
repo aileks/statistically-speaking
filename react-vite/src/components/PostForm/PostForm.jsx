@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFetcher } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -10,6 +10,17 @@ export default function PostForm() {
   const [errors, setErrors] = useState({});
   const [csvFile, setCsvFile] = useState(null);
   const [graphType, setGraphType] = useState('table');
+
+  useEffect(() => {
+    if (fetcher.data && fetcher.data.message) {
+      setErrors({ message: fetcher.data.message });
+    } else {
+      setTitle('');
+      setBody('');
+      setCsvFile(null);
+      setGraphType('table');
+    }
+  }, [fetcher.data]);
 
   const handleErrors = () => {
     setErrors({});
@@ -42,7 +53,7 @@ export default function PostForm() {
     setCsvFile(e.target.files[0]);
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     handleErrors();
 
@@ -54,34 +65,23 @@ export default function PostForm() {
       formData.append('graph_type', graphType);
 
       try {
-        fetcher.submit(formData, {
+        await fetcher.submit(formData, {
           method: 'POST',
           action: '/new',
           encType: 'multipart/form-data',
         });
-
-        if (fetcher.data && fetcher.data?.message) {
-          setErrors({ message: fetcher.data.message });
-        }
       } catch (err) {
         console.error(err);
         setErrors({
           message: err.message || 'An error occurred while creating the post',
         });
       }
-
-      if (!errors.message) {
-        setBody('');
-        setTitle('');
-        // FIXME: Not getting set to null
-        setCsvFile(null);
-      }
     }
   };
 
   return (
     user && (
-      <fetcher.Form
+      <form
         method='POST'
         onSubmit={handleSubmit}
         className='container my-6 flex flex-col gap-4 rounded-md bg-white p-4 shadow-md'
@@ -144,7 +144,7 @@ export default function PostForm() {
         >
           Post
         </button>
-      </fetcher.Form>
+      </form>
     )
   );
 }
