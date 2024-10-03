@@ -52,6 +52,7 @@ function LoginFormPage() {
           />
         </label>
         {errors.email && <p>{errors.email}</p>}
+
         <label>
           Password
           <input
@@ -62,7 +63,13 @@ function LoginFormPage() {
           />
         </label>
         {errors.password && <p>{errors.password}</p>}
-        <button type='submit'>Log In</button>
+
+        <button
+          type='submit'
+          className='rounded-2xl px-4 py-2 font-semibold text-white shadow transition duration-200 ease-in-out hover:bg-teal-700'
+        >
+          Log In
+        </button>
       </form>
     </>
   );

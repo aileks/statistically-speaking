@@ -51,7 +51,7 @@ function ProfileButton() {
 
       {showMenu && (
         <ul
-          className='absolute right-0 z-10 mt-2 w-fit rounded-md border border-gray-400 bg-white px-3 py-2 shadow-md'
+          className='absolute right-0 z-10 mt-2 mr-2 w-fit rounded-md border border-gray-400 bg-white px-3 py-2 shadow-md'
           ref={ulRef}
         >
           {user ?

@@ -1,5 +1,6 @@
-import { createContext, useContext, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
+import './Modal.css';
 
 const ModalContext = createContext();
 
@@ -8,15 +9,18 @@ export function ModalProvider({ children }) {
   const [modalContent, setModalContent] = useState(null);
   // callback function that will be called when modal is closing
   const [onModalClose, setOnModalClose] = useState(null);
+  const [isClosing, setIsClosing] = useState(false);
 
   const closeModal = () => {
-    setModalContent(null); // clear the modal contents
-    // If callback function is truthy, call the callback function and reset it
-    // to null:
-    if (typeof onModalClose === 'function') {
-      setOnModalClose(null);
-      onModalClose();
-    }
+    setIsClosing(true);
+    setTimeout(() => {
+      setModalContent(null);
+      setIsClosing(false);
+      if (typeof onModalClose === 'function') {
+        setOnModalClose(null);
+        onModalClose();
+      }
+    }, 300);
   };
 
   const contextValue = {
@@ -25,6 +29,7 @@ export function ModalProvider({ children }) {
     setModalContent, // function to set the React component to render inside modal
     setOnModalClose, // function to set the callback function called when modal is closing
     closeModal, // function to close the modal
+    isClosing,
   };
 
   return (
@@ -38,20 +43,49 @@ export function ModalProvider({ children }) {
 }
 
 export function Modal() {
-  const { modalRef, modalContent, closeModal } = useContext(ModalContext);
-  // If there is no div referenced by the modalRef or modalContent is not a
-  // truthy value, render nothing:
-  if (!modalRef || !modalRef.current || !modalContent) return null;
+  const { modalRef, modalContent, closeModal, isClosing } =
+    useContext(ModalContext);
+  const [isVisible, setIsVisible] = useState(false);
 
-  // Render the following component to the div referenced by the modalRef
+  useEffect(() => {
+    if (modalContent && !isClosing) {
+      setIsVisible(true);
+    } else if (isClosing) {
+      setIsVisible(false);
+    }
+  }, [modalContent, isClosing]);
+
+  if (!modalRef || !modalRef.current || (!modalContent && !isClosing))
+    return null;
+
+  const handleClose = () => {
+    setIsVisible(false);
+    setTimeout(closeModal, 300);
+  };
+
   return ReactDOM.createPortal(
-    <div id='modal'>
+    modalContent && (
       <div
-        id='modal-background'
-        onClick={closeModal}
-      />
-      <div id='modal-content'>{modalContent}</div>
-    </div>,
+        id='modal'
+        className='fixed inset-0 flex items-center justify-center z-50'
+      >
+        <div
+          id='modal-background'
+          onClick={handleClose}
+          className={`absolute inset-0 bg-black transition-opacity duration-300 ease-in-out ${
+            isVisible ? 'opacity-50' : 'opacity-0'
+          }`}
+        />
+        <div
+          id='modal-content'
+          className={`relative bg-white rounded-lg shadow-xl transition-all duration-300 ease-in-out transform ${
+            isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+          }`}
+        >
+          {modalContent}
+        </div>
+      </div>
+    ),
     modalRef.current
   );
 }

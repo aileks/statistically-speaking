@@ -45,7 +45,7 @@ export default function Toast() {
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'
       }`}
     >
-      <div className='bg-green-800 shadow-lg rounded-sm text-white px-2 py-1'>
+      <div className='rounded-sm bg-green-800 px-2 py-1 text-white shadow-lg'>
         {toast.message}
       </div>
     </div>
