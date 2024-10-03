@@ -4,7 +4,6 @@ import * as d3 from 'd3';
 export default function BarGraph({ data }) {
   const svgRef = useRef();
 
-  console.log(data);
   const drawBarGraph = () => {
     if (!svgRef.current) {
       console.error('SVG ref is null');
@@ -27,12 +26,18 @@ export default function BarGraph({ data }) {
     const xData = data.data.map(d => d[0]);
     const yData = data.data.map(d => d[1]);
 
+    // Create a band scale for the x-axis using the xData array
+    // The range is set to the width of the graph, with padding between the bars
     const x = d3.scaleBand().domain(xData).range([0, width]).padding(0.1);
+
+    // Create a linear scale for the y-axis using the yData array
+    // The range is set to the height of the graph, inverted to match the SVG coordinate system
     const y = d3
       .scaleLinear()
       .domain([0, d3.max(yData)])
       .range([height, 0]);
 
+    // Draw the bars
     svg
       .selectAll('.bar')
       .data(data.data)
@@ -45,6 +50,7 @@ export default function BarGraph({ data }) {
       .attr('height', d => height - y(d[1]))
       .attr('fill', 'steelblue');
 
+    // Draw the x-axis
     svg
       .append('g')
       .attr('transform', `translate(0,${height})`)
@@ -53,8 +59,10 @@ export default function BarGraph({ data }) {
       .attr('transform', 'translate(-10,0)rotate(-45)')
       .style('text-anchor', 'end');
 
+    // Draw the y-axis
     svg.append('g').call(d3.axisLeft(y));
 
+    // Add axis labels
     svg
       .append('text')
       .attr('transform', `translate(${width / 2}, ${height + margin.top + 60})`)
@@ -80,11 +88,8 @@ export default function BarGraph({ data }) {
   }, [data]);
 
   return (
-    <div className='flex items-center justify-center border border-gray-300 rounded'>
-      <svg
-        ref={svgRef}
-        className='m-2'
-      ></svg>
+    <div className='mx-auto mt-6 flex items-center justify-center overflow-x-auto rounded border border-gray-400 px-8'>
+      <svg ref={svgRef}></svg>
     </div>
   );
 }

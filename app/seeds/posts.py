@@ -37,15 +37,16 @@ def seed_posts() -> None:
     )
 
     post3 = Post(
-        title="Organizational Data",
+        title="COVID-19 Impact on Employment",
         body="""
-            The data provides insights into the growth trajectory of organizations over time, particularly in relation
-            to employee count and revenue generation. Larger organizations exhibit a clear correlation between
-            workforce size and revenue growth, with steady increases in both metrics over the years. Smaller firms,
-            while experiencing slower growth, show more volatility in revenue fluctuations, suggesting that they may
-            face greater challenges in scaling. The consistent upward trend in employee numbers among high-revenue
-            firms points to the strategic importance of workforce expansion in driving organizational success.
-            """,
+            The data illustrates the significant impact of COVID-19 on job losses throughout 2020. As the pandemic
+            progressed, there was a sharp rise in unemployment, with the most severe losses occurring in mid-2020.
+            Industries such as hospitality, retail, and travel were hit hardest, with thousands of jobs lost in
+            a matter of weeks. The trend shows that job recovery was slow towards the end of the year, with some
+            sectors beginning to stabilize but others continuing to struggle. This data underscores the deep and
+            widespread economic disruption caused by the pandemic, highlighting the vulnerability of certain
+            industries and the need for targeted recovery efforts.
+        """,
         user_id=3,
         created_at=datetime.now(),
         updated_at=datetime.now(),

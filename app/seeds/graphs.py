@@ -18,7 +18,7 @@ def seed_graphs() -> None:
 
     graph3 = Graph(
         type="line",
-        url="https://mycapstonestorage.s3.amazonaws.com/organizations.csv",
+        url="https://mycapstonestorage.s3.amazonaws.com/jobs.csv",
         post_id=3,
     )
 

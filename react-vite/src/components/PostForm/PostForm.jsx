@@ -130,8 +130,8 @@ export default function PostForm() {
 
           <span className='font-semibold mt-2 text-xs text-orange-600 self-center italic'>
             By uploading your data, you confirm that it has been cleaned and
-            that any discrepancies are solely due to the contents of the CSV
-            file.
+            that any discrepancies or errors are solely due to the contents of
+            your file.
           </span>
         </div>
         {errors.csvFile && <p className='text-red-500'>{errors.csvFile}</p>}
