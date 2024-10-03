@@ -42,6 +42,7 @@ class Post(db.Model):
             "title": self.title,
             "body": self.body,
             "userId": self.user_id,
+            "saves": [save.to_dict() for save in self.saves],
             "createdAt": self.created_at,
             "updatedAt": self.updated_at,
         }

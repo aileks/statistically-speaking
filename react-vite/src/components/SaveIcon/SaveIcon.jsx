@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
+import { useFetcher } from 'react-router-dom';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 
-export default function SaveIcon({ user, post, fetcher }) {
+export default function SaveIcon({ user, post }) {
+  console.log(post);
+  const fetcher = useFetcher();
   const [isSaved, setIsSaved] = useState(
-    user.saves.some(save => save.postId === post.id)
+    post.saves.some(save => save.userId === user.id)
   );
 
   useEffect(() => {
     if (fetcher.state === 'idle' && fetcher.data && !fetcher.data.message) {
-      const updatedSaves = fetcher.data;
-      setIsSaved(updatedSaves.some(save => save.postId === post.id));
+      setIsSaved(fetcher.data.some(save => save.userId === user.id));
     }
   }, [fetcher.state, fetcher.data, post.id]);
 
@@ -17,23 +19,12 @@ export default function SaveIcon({ user, post, fetcher }) {
     e.preventDefault();
 
     if (isSaved) {
-      try {
-        fetcher.submit(
-          { postId: post.id },
-          { method: 'DELETE', action: '/unsave' }
-        );
-      } catch (err) {
-        console.error(err);
-      }
+      fetcher.submit(
+        { postId: post.id },
+        { method: 'DELETE', action: '/unsave' }
+      );
     } else {
-      try {
-        fetcher.submit(
-          { postId: post.id },
-          { method: 'POST', action: '/save' }
-        );
-      } catch (err) {
-        console.error(err);
-      }
+      fetcher.submit({ postId: post.id }, { method: 'POST', action: '/save' });
     }
   };
 

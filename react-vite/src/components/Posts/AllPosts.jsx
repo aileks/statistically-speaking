@@ -3,10 +3,10 @@ import { Link, useFetcher } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import EditPost from './EditPost.jsx';
 import SaveIcon from '../SaveIcon/index.js';
-// import { useToast } from '../../context/Toast.jsx';
+import { useToast } from '../../context/Toast.jsx';
 
 export default function AllPosts({ posts }) {
-  // const { addToast } = useToast();
+  const { addToast } = useToast();
   const user = useSelector(state => state.session.user);
   const fetcher = useFetcher();
   const [editingPostId, setEditingPostId] = useState(-1);
@@ -21,7 +21,7 @@ export default function AllPosts({ posts }) {
 
     if (window.confirm('Are you sure you want to delete this post?')) {
       fetcher.submit({ id }, { method: 'DELETE', action: '/delete' });
-      // addToast('Post deleted successfully!');
+      addToast('Post deleted successfully!');
     }
   };
 
@@ -50,7 +50,6 @@ export default function AllPosts({ posts }) {
                     <>
                       {user.id !== post.userId ?
                         <SaveIcon
-                          fetcher={fetcher}
                           post={post}
                           user={user}
                         />

@@ -47,7 +47,6 @@ export default function Post() {
               <>
                 {user.id !== post.userId ?
                   <SaveIcon
-                    fetcher={fetcher}
                     post={post}
                     user={user}
                   />

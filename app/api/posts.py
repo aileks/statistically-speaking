@@ -81,6 +81,10 @@ def delete_post(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int
 @posts.route("/<int:post_id>/save", methods=["POST"])
 def save_post(post_id: int) -> Union[tuple[dict[str, str], int], list[dict[str, int]]]:
     post: Post = Post.query.get(post_id)
+    save: Save = Save.query.filter_by(user_id=current_user.id, post_id=post_id).first()
+
+    if save:
+        return {"error": "Already saved"}, 400
 
     if not post:
         return {"error": "Post not found"}, 404
