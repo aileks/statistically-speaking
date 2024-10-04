@@ -1,18 +1,12 @@
 import { RiUserFollowFill } from 'react-icons/ri';
-import { useSelector } from 'react-redux';
-import { useFetcher, useNavigate } from 'react-router-dom';
+import { useFetcher } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-export default function FollowButton({ user }) {
-  const currentUser = useSelector(state => state.session.user);
+export default function FollowButton({ user, currentUser }) {
   const fetcher = useFetcher();
   const [isFollowing, setIsFollowing] = useState(
-    currentUser.follows.includes(user.id)
+    currentUser.follows.includes(user.id) || true
   );
-  const navigate = useNavigate();
-
-  console.log('\n\n\nUSER VIEWING', user);
-  console.log('\n\n\nCURRENT USER', currentUser);
 
   useEffect(() => {
     setIsFollowing(!isFollowing);

@@ -1,9 +1,11 @@
 import { useLoaderData } from 'react-router-dom';
 import { RxAvatar } from 'react-icons/rx';
+import { useSelector } from 'react-redux';
 import FollowButton from '../FollowButton';
 
 export default function UserProfile() {
   const user = useLoaderData();
+  const currentUser = useSelector(state => state.session.user);
 
   return (
     <div className='container'>
@@ -25,7 +27,12 @@ export default function UserProfile() {
           <h4 className='text-gray-600'>{user.email}</h4>
         </section>
 
-        <FollowButton user={user} />
+        {currentUser && (
+          <FollowButton
+            user={user}
+            currentUser={currentUser}
+          />
+        )}
 
         <section className='mt-4 mb-0'>
           <h3 className='underline mb-0'>About Me</h3>
