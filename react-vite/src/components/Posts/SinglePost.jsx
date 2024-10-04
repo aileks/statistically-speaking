@@ -8,9 +8,12 @@ import NotFound from '../404.jsx';
 import Table from '../Graphs/Table';
 import LineGraph from '../Graphs/LineGraph';
 import BarGraph from '../Graphs/BarGraph';
+import DeleteModal from '../DeleteModal';
+import { useModal } from '../../context/Modal';
 
 export default function SinglePost() {
   const { addToast } = useToast();
+  const { setModalContent } = useModal();
   const navigate = useNavigate();
   const post = useLoaderData();
   const fetcher = useFetcher();
@@ -23,15 +26,15 @@ export default function SinglePost() {
     setEditingPostId(post.id);
   };
 
-  const handleDelete = (e, id) => {
-    e.preventDefault();
+  const handleDelete = id => {
+    fetcher.submit({ id }, { method: 'DELETE', action: '/delete' });
+    addToast('Post deleted successfully!');
+    fetcher.load('/');
+    navigate('/');
+  };
 
-    if (window.confirm('Are you sure you want to delete this post?')) {
-      fetcher.submit({ id }, { method: 'DELETE', action: '/delete' });
-      addToast('Post deleted successfully!');
-      fetcher.load('/');
-      navigate('/');
-    }
+  const openDeleteModal = id => {
+    setModalContent(<DeleteModal onDelete={() => handleDelete(id)} />);
   };
 
   if (post.error === 'Post not found') return <NotFound />;
@@ -47,12 +50,13 @@ export default function SinglePost() {
           />
         : <>
             <h2 className='font-bold underline'>{post.title}</h2>
+            <p className='text-sm text-slate-500'>by {post.user.username}</p>
 
             <p className='text-lg'>{post.body}</p>
 
             {user && (
               <>
-                {user.id !== post.userId ?
+                {user.id !== post.user.id ?
                   <SaveIcon
                     post={post}
                     user={user}
@@ -66,7 +70,7 @@ export default function SinglePost() {
                     </button>
 
                     <button
-                      onClick={e => handleDelete(e, post.id)}
+                      onClick={() => openDeleteModal(post.id)}
                       className='btn-delete'
                     >
                       Delete

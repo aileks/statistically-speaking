@@ -33,11 +33,11 @@ input, textarea {
 }
 
 .btn {
-    @apply bg-teal-600 text-white font-semibold py-2 px-4 rounded-2xl shadow hover:bg-teal-700 transition duration-200 ease-in-out;
+    @apply bg-teal-600 text-white font-semibold py-2 px-4 rounded-md shadow hover:bg-teal-700 transition duration-200 ease-in-out;
 }
 
 .btn-edit, .btn-delete, .btn-save {
-    @apply bg-gray-300 text-gray-800 font-medium py-1 px-2 rounded-2xl shadow-sm hover:bg-gray-400 transition duration-200 ease-in-out text-sm;
+    @apply bg-gray-300 text-gray-800 font-medium py-1 px-2 rounded-md shadow-sm hover:bg-gray-400 transition duration-200 ease-in-out text-sm;
 }
 
 .btn-delete {
@@ -49,7 +49,7 @@ input, textarea {
 }
 
 .card {
-    @apply bg-white shadow-md rounded-lg p-6 mb-4 transition duration-200 ease-in-out hover:shadow-lg;
+    @apply bg-white shadow-md rounded-md p-6 mb-4 transition duration-200 ease-in-out hover:shadow-lg;
 }
 
 .container {

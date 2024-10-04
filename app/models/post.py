@@ -37,11 +37,12 @@ class Post(db.Model):
     )
 
     def to_dict(self) -> dict[str, Union[int, str]]:
+        user = self.user.to_dict()
         return {
             "id": self.id,
             "title": self.title,
             "body": self.body,
-            "userId": self.user_id,
+            "user": {"id": user["id"], "username": user["username"]},
             "saves": [save.to_dict() for save in self.saves],
             "graph": self.graph.to_dict() if self.graph else None,
             "createdAt": self.created_at,
