@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFetcher, useNavigate } from 'react-router-dom';
 import { useModal } from '../../context/Modal.jsx';
 import DeleteModal from '../DeleteModal/index.js';
@@ -13,6 +13,30 @@ export default function Comments({ post }) {
   const [editedCommentBody, setEditedCommentBody] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (fetcher.data && fetcher.data.message) {
+      setErrors(() => ({ ...errors, message: fetcher.data.message }));
+    }
+  }, [fetcher.data]);
+
+  const handleErrors = () => {
+    setErrors({});
+    const newErrors = {};
+
+    if (isEditing) {
+      if (editedCommentBody.length === 0) {
+        newErrors.comment = 'Comment cannot be empty';
+      }
+    } else {
+      if (commentBody.length === 0) {
+        newErrors.comment = 'Comment cannot be empty';
+      }
+    }
+
+    return newErrors;
+  };
 
   const handleEdit = comment => {
     setIsEditing(true);
@@ -22,14 +46,21 @@ export default function Comments({ post }) {
 
   const handleUpdateComment = async e => {
     e.preventDefault();
-    await fetcher.submit(
-      { id: editingCommentId, comment_body: editedCommentBody },
-      { method: 'PUT', action: `/comments/edit` }
-    );
-    setIsEditing(false);
-    setEditedCommentBody('');
-    setEditingCommentId(null);
-    navigate('.');
+    const newErrors = handleErrors();
+
+    if (Object.keys(newErrors).length === 0) {
+      await fetcher.submit(
+        { id: editingCommentId, comment_body: editedCommentBody },
+        { method: 'PUT', action: `/comments/edit` }
+      );
+
+      setIsEditing(false);
+      setEditedCommentBody('');
+      setEditingCommentId(null);
+      navigate('.');
+    }
+
+    setErrors(newErrors);
   };
 
   const handleDelete = async id => {
@@ -37,6 +68,7 @@ export default function Comments({ post }) {
       { id },
       { method: 'DELETE', action: '/comments/delete' }
     );
+
     navigate('.');
   };
 
@@ -46,12 +78,19 @@ export default function Comments({ post }) {
 
   const handleAddComment = async e => {
     e.preventDefault();
-    fetcher.submit(
-      { comment_body: commentBody },
-      { method: 'POST', action: `/comments/${post.id}` }
-    );
-    setCommentBody('');
-    e.target.reset();
+    const newErrors = handleErrors();
+
+    if (Object.keys(newErrors).length === 0) {
+      fetcher.submit(
+        { comment_body: commentBody },
+        { method: 'POST', action: `/comments/${post.id}` }
+      );
+
+      setCommentBody('');
+      e.target.reset();
+    }
+
+    setErrors(newErrors);
   };
 
   return (
@@ -59,10 +98,7 @@ export default function Comments({ post }) {
       <h2 className='font-bold underline'>Comments</h2>
 
       {user && (
-        <form
-          onSubmit={handleAddComment}
-          className='mt-4 flex flex-col'
-        >
+        <form className='mt-4 flex flex-col'>
           <textarea
             name='body'
             value={commentBody}
@@ -71,9 +107,12 @@ export default function Comments({ post }) {
             rows={4}
             placeholder='Any thoughts?'
           ></textarea>
+          {!isEditing && errors.comment && (
+            <p className='text-red-500'>{errors.comment}</p>
+          )}
 
           <button
-            type='submit'
+            onClick={handleAddComment}
             className='btn mt-2 text-sm self-end'
           >
             Add Comment
@@ -101,6 +140,9 @@ export default function Comments({ post }) {
                   rows={4}
                   placeholder='Edit your comment...'
                 ></textarea>
+                {errors.comment && (
+                  <p className='text-red-500'>{errors.comment}</p>
+                )}
 
                 <button
                   type='submit'
