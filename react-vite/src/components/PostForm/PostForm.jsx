@@ -102,7 +102,7 @@ export default function PostForm() {
           onChange={e => setTitle(e.target.value)}
           placeholder='Title'
           required
-          className='rounded-lg border border-gray-400 bg-white p-3'
+          className='rounded-md border border-gray-400 bg-white p-3'
         />
         {errors.title && <p className='text-red-500'>{errors.title}</p>}
 
@@ -112,7 +112,7 @@ export default function PostForm() {
           placeholder='Post'
           rows={5}
           required
-          className='rounded-lg border border-gray-400 bg-white p-3'
+          className='rounded-md border border-gray-400 bg-white p-3'
         />
         {errors.body && <p className='text-red-500'>{errors.body}</p>}
 
@@ -121,7 +121,7 @@ export default function PostForm() {
           <select
             value={graphType}
             onChange={e => setGraphType(e.target.value)}
-            className='rounded-lg border border-gray-400 bg-white px-1 ml-2'
+            className='rounded-md border border-gray-400 bg-white px-1 ml-2'
           >
             <option value='table'>Table</option>
             <option value='bar'>Bar</option>
@@ -135,7 +135,7 @@ export default function PostForm() {
             onChange={handleFileChange}
             accept='.csv'
             required
-            className='rounded-lg border border-gray-400 bg-white p-3'
+            className='rounded-md border border-gray-400 bg-white p-3'
             ref={fileInputRef}
           />
 

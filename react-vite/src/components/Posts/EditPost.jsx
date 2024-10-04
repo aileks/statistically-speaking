@@ -81,7 +81,7 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
         type='text'
         value={editedTitle}
         onChange={e => setEditedTitle(e.target.value)}
-        className='rounded-lg border border-gray-400 bg-white p-3'
+        className='rounded-md border border-gray-400 bg-white p-3'
       />
 
       {errors.title && (
@@ -92,7 +92,7 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
         value={editedBody}
         onChange={e => setEditedBody(e.target.value)}
         rows={5}
-        className='rounded-lg border border-gray-400 bg-white p-3'
+        className='rounded-md border border-gray-400 bg-white p-3'
       />
       {errors.body && (
         <p className='text-sm italic text-red-500'>{errors.body}</p>
@@ -103,7 +103,7 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
         <select
           value={editedType}
           onChange={e => setEditedType(e.target.value)}
-          className='rounded-lg border border-gray-400 bg-white px-1 ml-2'
+          className='rounded-md border border-gray-400 bg-white px-1 ml-2'
         >
           <option value='table'>Table</option>
           <option value='bar'>Bar</option>
