@@ -54,7 +54,7 @@ export const thunkSignup = user => async dispatch => {
     const errorMessages = await response.json();
     return errorMessages;
   } else {
-    return { server: 'Something went wrong. Please try again' };
+    return { message: 'Something went wrong. Please try again' };
   }
 };
 

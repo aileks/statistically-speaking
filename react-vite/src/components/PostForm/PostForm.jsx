@@ -104,7 +104,9 @@ export default function PostForm() {
           required
           className='rounded-md border border-gray-400 bg-white p-3'
         />
-        {errors.title && <p className='text-red-500'>{errors.title}</p>}
+        {errors.title && (
+          <p className='text-red-500 text-sm italic'>{errors.title}</p>
+        )}
 
         <textarea
           value={body}
@@ -114,7 +116,9 @@ export default function PostForm() {
           required
           className='rounded-md border border-gray-400 bg-white p-3'
         />
-        {errors.body && <p className='text-red-500'>{errors.body}</p>}
+        {errors.body && (
+          <p className='text-red-500 text-sm italic'>{errors.body}</p>
+        )}
 
         <label>
           Graph Type:
@@ -145,9 +149,13 @@ export default function PostForm() {
             your file.
           </span>
         </div>
-        {errors.csvFile && <p className='text-red-500'>{errors.csvFile}</p>}
+        {errors.csvFile && (
+          <p className='text-red-500 text-sm italic'>{errors.csvFile}</p>
+        )}
 
-        {errors.message && <p className='text-red-500'>{errors.message}</p>}
+        {errors.message && (
+          <p className='text-red-500 text-sm italic'>{errors.message}</p>
+        )}
 
         <button
           type='submit'

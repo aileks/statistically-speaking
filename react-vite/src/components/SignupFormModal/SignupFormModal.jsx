@@ -8,68 +8,168 @@ function SignupFormModal() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [bio, setBio] = useState('');
+  const [field, setField] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
-  const handleSubmit = async e => {
-    e.preventDefault();
+  const handleErrors = () => {
+    setErrors('');
+    const newErrors = {};
 
+    if (!email.length) {
+      newErrors.email = 'Email is required';
+    }
+    if (!username.length) {
+      newErrors.username = 'Username is required';
+    }
+    if (!firstName.length) {
+      newErrors.firstName = 'First name is required';
+    }
+    if (!lastName.length) {
+      newErrors.lastName = 'Last name is required';
+    }
+    if (!password.length) {
+      newErrors.password = 'Password is required';
+    }
     if (password !== confirmPassword) {
-      return setErrors({
-        confirmPassword:
-          'Confirm Password field must be the same as the Password field',
-      });
+      newErrors.confirmPassword = 'Passwords do not match';
     }
 
-    const serverResponse = await dispatch(
-      thunkSignup({
-        email,
-        username,
-        password,
-      })
-    );
+    return newErrors;
+  };
 
-    if (serverResponse) {
-      setErrors(serverResponse);
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const newErrors = handleErrors();
+
+    if (Object.keys(newErrors).length === 0) {
+      const serverResponse = await dispatch(
+        thunkSignup({
+          first_name: firstName,
+          last_name: lastName,
+          bio,
+          field,
+          email,
+          username,
+          password,
+        })
+      );
+
+      if (serverResponse) {
+        setErrors(serverResponse);
+      } else {
+        closeModal();
+      }
     } else {
-      closeModal();
+      setErrors(newErrors);
     }
   };
 
   return (
-    <div className='px-10 py-8'>
+    <div className='flex flex-col items-center justify-center py-8 w-[600px]'>
       <h1>Sign Up</h1>
-      {errors.message && <p>{errors.message}</p>}
+
+      {errors.message && (
+        <p className='text-red-500 text-sm italic'>{errors.message}</p>
+      )}
 
       <form
-        className='flex w-64 flex-col gap-4'
+        className='flex flex-col gap-4'
         onSubmit={handleSubmit}
       >
+        <div className='flex items-center justify-between'>
+          <label className='flex flex-col'>
+            First Name
+            <input
+              type='text'
+              value={firstName}
+              onChange={e => setFirstName(e.target.value)}
+              className='rounded-md border border-gray-400 p-1'
+              placeholder='First Name'
+              required
+            />
+          </label>
+          {errors.firstName && (
+            <p className='text-red-500 text-sm italic'>{errors.firstName}</p>
+          )}
+
+          <label className='flex flex-col'>
+            Last Name
+            <input
+              type='text'
+              value={lastName}
+              onChange={e => setLastName(e.target.value)}
+              className='rounded-md border border-gray-400 p-1'
+              placeholder='Last Name'
+              required
+            />
+          </label>
+          {errors.lastName && (
+            <p className='text-red-500 text-sm italic'>{errors.lastName}</p>
+          )}
+        </div>
+
         <label className='flex flex-col'>
           Email
           <input
             type='text'
             value={email}
             onChange={e => setEmail(e.target.value)}
-            required
             className='rounded-md border border-gray-400 p-1'
+            placeholder='Email'
+            required
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
+        {errors.email && (
+          <p className='text-red-500 text-sm italic'>{errors.email}</p>
+        )}
 
-        <label className='flex flex-col'>
+        <label className='flex flex-col w-[440px]'>
           Username
           <input
             type='text'
             value={username}
             onChange={e => setUsername(e.target.value)}
-            required
             className='rounded-md border border-gray-400 p-1'
+            placeholder='Username'
+            required
           />
         </label>
-        {errors.username && <p>{errors.username}</p>}
+        {errors.username && (
+          <p className='text-red-500 text-sm italic'>{errors.username}</p>
+        )}
+
+        <label className='flex flex-col'>
+          Bio (optional)
+          <textarea
+            value={bio}
+            onChange={e => setBio(e.target.value)}
+            rows={5}
+            className='rounded-md border border-gray-400 p-1'
+            placeholder='Tell us about yourself'
+          />
+        </label>
+        {errors.bio && (
+          <p className='text-red-500 text-sm italic'>{errors.bio}</p>
+        )}
+
+        <label className='flex flex-col'>
+          Occupational Field (optional)
+          <input
+            value={field}
+            onChange={e => setField(e.target.value)}
+            className='rounded-md border border-gray-400 p-1'
+            placeholder="What's your industry?"
+          />
+        </label>
+        {errors.field && (
+          <p className='text-red-500 text-sm italic'>{errors.field}</p>
+        )}
 
         <label className='flex flex-col'>
           Password
@@ -77,8 +177,9 @@ function SignupFormModal() {
             type='password'
             value={password}
             onChange={e => setPassword(e.target.value)}
-            required
+            placeholder='Password'
             className='rounded-md border border-gray-400 p-1'
+            required
           />
         </label>
         {errors.password && <p>{errors.password}</p>}
@@ -89,11 +190,16 @@ function SignupFormModal() {
             type='password'
             value={confirmPassword}
             onChange={e => setConfirmPassword(e.target.value)}
-            required
+            placeholder='Confirm Password'
             className='rounded-md border border-gray-400 p-1'
+            required
           />
         </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+        {errors.confirmPassword && (
+          <p className='text-red-500 text-sm italic'>
+            {errors.confirmPassword}
+          </p>
+        )}
 
         <button
           type='submit'

@@ -3,7 +3,7 @@ import { Link, useLoaderData } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import SaveIcon from '../SaveIcon/index.js';
 
-export default function Profile() {
+export default function MyProfile() {
   const allPosts = useLoaderData();
   const user = useSelector(state => state.session.user);
 

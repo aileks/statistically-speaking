@@ -38,7 +38,7 @@ export default function AllPosts({ posts }) {
     <div className='container'>
       <h2 className='text-2xl font-bold'>{user ? 'Your Feed' : 'Feed'}</h2>
 
-      {posts.length &&
+      {posts.length ?
         posts.map(post => (
           <div
             key={post.id}
@@ -84,19 +84,24 @@ export default function AllPosts({ posts }) {
 
                 <h3 className='font-bold underline'>{post.title}</h3>
 
-                <p className='text-sm text-slate-500'>
+                <Link
+                  className='w-fit mb-3 text-sm text-slate-500 hover:text-slate-600 hover:underline'
+                  onClick={e => e.stopPropagation()}
+                  to={`/user/${post.user.id}`}
+                >
                   by {post.user.username}
-                </p>
+                </Link>
 
                 <p className='text-sm'>{post.body}</p>
 
-                <p className='text-sm text-slate-500 self-end mb-0'>
+                <p className='text-sm text-slate-500 self-end mb-0 hover:text-slate-600 hover:underline'>
                   {post.comments.length} comments
                 </p>
               </Link>
             }
           </div>
-        ))}
+        ))
+      : <h3 className='text-center mt-8'>No posts found</h3>}
     </div>
   );
 }

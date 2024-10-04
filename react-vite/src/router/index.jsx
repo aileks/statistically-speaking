@@ -4,7 +4,8 @@ import NotFound from '../components/404.jsx';
 import ErrorBoundary from './ErrorBoundary.jsx';
 import Index from '../components/Index';
 import SinglePost from '../components/Posts/SinglePost';
-import Profile from '../components/Profile/index.js';
+import MyProfile from '../components/Profile';
+import UserProfile from '../components/Profile/UserProfile.jsx';
 
 export const router = createBrowserRouter([
   {
@@ -29,8 +30,17 @@ export const router = createBrowserRouter([
         },
       },
       {
+        path: '/user/:userId',
+        element: <UserProfile />,
+        loader: async ({ params }) => {
+          const { userId } = params;
+          const res = await fetch(`/api/users/${userId}`);
+          return res.json();
+        },
+      },
+      {
         path: '/profile',
-        element: <Profile />,
+        element: <MyProfile />,
         loader: async () => {
           const res = await fetch('/api/posts');
           return res.json();

@@ -1,3 +1,3 @@
-import Profile from './Profile';
+import MyProfile from './MyProfile.jsx';
 
-export default Profile;
+export default MyProfile;
