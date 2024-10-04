@@ -10,6 +10,23 @@ function LoginFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+  const handleDemoLogin = async e => {
+    e.preventDefault();
+
+    const serverResponse = await dispatch(
+      thunkLogin({
+        email: 'demo@example.com',
+        password: 'password',
+      })
+    );
+
+    if (serverResponse) {
+      setErrors(serverResponse);
+    } else {
+      closeModal();
+    }
+  };
+
   const handleSubmit = async e => {
     e.preventDefault();
 
@@ -64,6 +81,13 @@ function LoginFormModal() {
           className='mt-5 flex-shrink-0 flex-grow-0 self-center btn'
         >
           Log In
+        </button>
+
+        <button
+          onClick={e => handleDemoLogin(e)}
+          className='flex-shrink-0 flex-grow-0 self-center btn'
+        >
+          Demo Log In
         </button>
       </form>
     </div>
