@@ -4,7 +4,6 @@ import FollowButton from '../FollowButton';
 
 export default function UserProfile() {
   const user = useLoaderData();
-  console.log(user);
 
   return (
     <div className='container'>
@@ -16,7 +15,12 @@ export default function UserProfile() {
           </h2>
         </section>
 
-        <section className='mt-1 mb-4 pb-2 flex gap-4 justify-center border-b border-amber-400'>
+        <p className='text-gray-400 text-center mb-0'>
+          {user.followersCount}{' '}
+          {user.followersCount === 1 ? 'Follower' : 'Followers'}
+        </p>
+
+        <section className='mb-4 pb-2 flex gap-4 justify-center border-b border-amber-400'>
           <h4 className='text-gray-600'>{user.field}</h4>
           <h4 className='text-gray-600'>{user.email}</h4>
         </section>

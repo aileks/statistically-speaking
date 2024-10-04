@@ -73,9 +73,6 @@ class User(db.Model, UserMixin):
     def followers_count(self) -> int:
         return self.followers.count()
 
-    def following_count(self) -> int:
-        return self.following.count()
-
     def to_dict(self) -> dict[str, Union[int, str, list[dict[str, int]]]]:
         return {
             "id": self.id,

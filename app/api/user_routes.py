@@ -1,7 +1,7 @@
 from flask import Blueprint
-from flask_login import login_required
+from flask_login import login_required, current_user
 
-from app.models import User
+from app.models import db, User
 
 user_routes = Blueprint("users", __name__)
 
@@ -23,4 +23,34 @@ def user(id):
     Query for a user by id and returns that user in a dictionary
     """
     user = User.query.get(id)
-    return user.to_dict()
+    user_dict = user.to_dict()
+    user_dict["followersCount"] = user.followers_count()
+    return user_dict
+
+
+@user_routes.route("/<int:id>/follow", methods=["POST"])
+@login_required
+def follow(id):
+    user_to_follow = User.query.get(id)
+
+    if current_user.is_following(user_to_follow):
+        return {}, 400
+
+    current_user.follow(user_to_follow)
+
+    db.session.commit()
+    return {"message": "Followed successfully"}
+
+
+@user_routes.route("/<int:id>/follow", methods=["DELETE"])
+@login_required
+def unfollow(id):
+    user_to_unfollow = User.query.get(id)
+
+    if not current_user.is_following(user_to_unfollow):
+        return {"errors": "User is not followed"}, 400
+
+    current_user.unfollow(user_to_unfollow)
+
+    db.session.commit()
+    return {"message": "Unfollowed successfully"}

@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
         },
       },
       {
-        path: '/user/:userId',
+        path: 'user/:userId',
         element: <UserProfile />,
         loader: async ({ params }) => {
           const { userId } = params;
@@ -39,11 +39,42 @@ export const router = createBrowserRouter([
         },
       },
       {
-        path: '/profile',
+        path: 'profile',
         element: <MyProfile />,
         loader: async () => {
           const res = await fetch('/api/posts');
           return res.json();
+        },
+      },
+      {
+        path: 'follow',
+        action: async ({ request }) => {
+          const formData = await request.formData();
+
+          const res = await fetch(
+            `/api/users/${formData.get('userId')}/follow`,
+            {
+              method: 'POST',
+              body: formData,
+            }
+          );
+
+          return await res.json();
+        },
+      },
+      {
+        path: 'unfollow',
+        action: async ({ request }) => {
+          const formData = await request.formData();
+
+          const res = await fetch(
+            `/api/users/${formData.get('userId')}/follow`,
+            {
+              method: 'DELETE',
+            }
+          );
+
+          return await res.json();
         },
       },
       {

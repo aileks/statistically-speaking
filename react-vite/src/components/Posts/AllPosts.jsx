@@ -87,7 +87,11 @@ export default function AllPosts({ posts }) {
                 <Link
                   className='w-fit mb-3 text-sm text-slate-500 hover:text-slate-600 hover:underline'
                   onClick={e => e.stopPropagation()}
-                  to={`/user/${post.user.id}`}
+                  to={
+                    post.user.username === user.username ?
+                      '/profile'
+                    : `/user/${post.user.id}`
+                  }
                 >
                   by {post.user.username}
                 </Link>
