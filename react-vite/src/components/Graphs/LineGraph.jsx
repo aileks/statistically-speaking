@@ -13,13 +13,13 @@ export default function LineGraph({ data }) {
     d3.select(svgRef.current).selectAll('*').remove();
 
     const margin = { top: 20, right: 30, bottom: 100, left: 60 };
-    const width = 800 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+    const width = svgRef.current.clientWidth - margin.left - margin.right;
+    const height = svgRef.current.clientHeight - margin.top - margin.bottom;
 
     const svg = d3
       .select(svgRef.current)
-      .attr('width', width + margin.left + margin.right)
-      .attr('height', height + margin.top + margin.bottom)
+      .attr('width', '100%')
+      .attr('height', '100%')
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
@@ -130,7 +130,7 @@ export default function LineGraph({ data }) {
     <div className='mt-6 flex items-center justify-center overflow-x-auto rounded border border-gray-400'>
       <svg
         ref={svgRef}
-        className='m-2'
+        className='w-full h-[500px] p-2'
       ></svg>
     </div>
   );
