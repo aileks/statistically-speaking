@@ -3,8 +3,8 @@ from typing import Union
 from flask import Blueprint, request
 from flask_login import current_user
 
-from app.models import db, Post, Save, Graph
-from app.upload import upload_file_to_s3
+from app.models import db, Post, Save, Graph, Comment
+from app.upload import upload_file_to_s3, remove_file_from_s3, get_unique_filename
 from app.utils import get_data, check_data
 
 posts = Blueprint("posts", __name__)
@@ -49,8 +49,7 @@ def create_post() -> Union[dict[str, str], tuple[dict[str, str], int]]:
     if csv_file.filename.rsplit(".", 1)[1].lower() != "csv":
         return {"message": "File must be a CSV"}, 400
 
-    # TODO: Implement get_unique_filename
-    # get_unique_filename(csv_file.filename)
+    csv_file.filename = get_unique_filename(csv_file.filename)
     upload_res = upload_file_to_s3(csv_file)
 
     if "url" not in upload_res:
@@ -125,6 +124,11 @@ def delete_post(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int
     if post.user_id != current_user.id or not current_user:
         return {"error": "Unauthorized"}, 401
 
+    if graph.url:
+        is_success = remove_file_from_s3(graph.url)
+        if not is_success:
+            return is_success, 500
+
     db.session.delete(graph)
     db.session.commit()
     db.session.delete(post)
@@ -172,3 +176,26 @@ def unsave_post(
     db.session.commit()
 
     return [save.to_dict() for save in current_user.saves]
+
+
+@posts.route("/<int:post_id>/comments", methods=["POST"])
+def add_comment(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int]]:
+    if not current_user:
+        return {"error": "Unauthorized"}, 401
+
+    post: Post = Post.query.get(post_id)
+
+    if not post:
+        return {"error": "Post not found"}, 404
+
+    body = request.form.get("comment_body")
+
+    if not body:
+        return {"message": "Missing required fields"}, 400
+
+    new_comment = Comment(body=body, user_id=current_user.id, post_id=post_id)
+
+    db.session.add(new_comment)
+    db.session.commit()
+
+    return new_comment.to_dict()

@@ -10,6 +10,7 @@ import LineGraph from '../Graphs/LineGraph';
 import BarGraph from '../Graphs/BarGraph';
 import DeleteModal from '../DeleteModal';
 import { useModal } from '../../context/Modal';
+import Comments from '../Comments/index.js';
 
 export default function SinglePost() {
   const { addToast } = useToast();
@@ -18,16 +19,16 @@ export default function SinglePost() {
   const post = useLoaderData();
   const fetcher = useFetcher();
   const user = useSelector(state => state.session.user);
-  const [editingPostId, setEditingPostId] = useState(-1);
   const graphType = post?.graph?.type;
+  const [editingPostId, setEditingPostId] = useState(-1);
 
   const handleEdit = (e, post) => {
     e.preventDefault();
     setEditingPostId(post.id);
   };
 
-  const handleDelete = id => {
-    fetcher.submit({ id }, { method: 'DELETE', action: '/delete' });
+  const handleDelete = async id => {
+    await fetcher.submit({ id }, { method: 'DELETE', action: '/delete' });
     addToast('Post deleted successfully!');
     fetcher.load('/');
     navigate('/');
@@ -52,7 +53,7 @@ export default function SinglePost() {
             <h2 className='font-bold underline'>{post.title}</h2>
             <p className='text-sm text-slate-500'>by {post.user.username}</p>
 
-            <p className='text-lg'>{post.body}</p>
+            <p className='text-lg text-gray-800'>{post.body}</p>
 
             {user && (
               <>
@@ -86,6 +87,8 @@ export default function SinglePost() {
           </>
         }
       </div>
+
+      <Comments post={post} />
     </div>
   );
 }

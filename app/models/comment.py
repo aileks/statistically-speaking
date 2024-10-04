@@ -1,8 +1,7 @@
 from datetime import datetime
 from typing import Union
 
-from .db import db, environment, SCHEMA
-from .post import post_comments
+from .db import db, environment, SCHEMA, add_prefix_for_prod
 
 
 class Comment(db.Model):
@@ -15,12 +14,22 @@ class Comment(db.Model):
     body = db.Column(db.Text(), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, onupdate=datetime.now)
-    posts = db.relationship("Post", secondary=post_comments, back_populates="comments")
+    user_id = db.Column(
+        db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False
+    )
+    post_id = db.Column(
+        db.Integer, db.ForeignKey(add_prefix_for_prod("posts.id")), nullable=False
+    )
+
+    post = db.relationship("Post", back_populates="comments")
+    user = db.relationship("User", back_populates="comments")
 
     def to_dict(self) -> dict[str, Union[int, str]]:
+        user = self.user.to_dict()
         return {
             "id": self.id,
             "body": self.body,
-            "created_at": self.created_at,
-            "updated_at": self.updated_at,
+            "user": {"id": user["id"], "username": user["username"]},
+            "createdAt": self.created_at,
+            "updatedAt": self.updated_at,
         }

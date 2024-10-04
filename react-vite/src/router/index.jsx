@@ -58,7 +58,7 @@ export const router = createBrowserRouter([
             method: 'DELETE',
           });
 
-          return res.json();
+          return await res.json();
         },
       },
       {
@@ -71,7 +71,7 @@ export const router = createBrowserRouter([
             body: formData,
           });
 
-          return res.json();
+          return await res.json();
         },
       },
       {
@@ -83,7 +83,7 @@ export const router = createBrowserRouter([
             method: 'POST',
           });
 
-          return res.json();
+          return await res.json();
         },
       },
       {
@@ -95,7 +95,46 @@ export const router = createBrowserRouter([
             method: 'DELETE',
           });
 
-          return res.json();
+          return await res.json();
+        },
+      },
+      {
+        path: 'comments/:postId',
+        action: async ({ request, params }) => {
+          const formData = await request.formData();
+          const { postId } = params;
+
+          const res = await fetch(`/api/posts/${postId}/comments`, {
+            method: 'POST',
+            body: formData,
+          });
+
+          return await res.json();
+        },
+      },
+      {
+        path: 'comments/delete',
+        action: async ({ request }) => {
+          const formData = await request.formData();
+
+          const res = await fetch(`/api/comments/${formData.get('id')}`, {
+            method: 'DELETE',
+          });
+
+          return await res.json();
+        },
+      },
+      {
+        path: 'comments/edit',
+        action: async ({ request }) => {
+          const formData = await request.formData();
+
+          const res = await fetch(`/api/comments/${formData.get('id')}`, {
+            method: 'PUT',
+            body: formData,
+          });
+
+          return await res.json();
         },
       },
       {

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 export default function EditPost({ post, fetcher, setEditingPostId }) {
-  // const originalType = post.graph.type;
   const [editedTitle, setEditedTitle] = useState(post.title);
   const [editedBody, setEditedBody] = useState(post.body);
   const [editedType, setEditedType] = useState(post.graph.type);
@@ -41,14 +40,6 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
     } else if (editedBody.length > 1500) {
       newErrors.body = 'Post cannot be more than 1500 characters';
     }
-
-    // if (
-    //   originalType === 'table' &&
-    //   (editedType === 'bar' || editedType === 'line')
-    // ) {
-    //   newErrors.type =
-    //     "Graphs of type 'Bar' or 'Line' must have only two (2) columns";
-    // }
 
     return newErrors;
   };

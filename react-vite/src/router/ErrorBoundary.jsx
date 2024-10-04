@@ -4,8 +4,6 @@ import { BiLeftArrowAlt } from 'react-icons/bi';
 export default function ErrorBoundary() {
   const error = useRouteError();
 
-  console.log(error);
-
   return (
     <div className='mt-44 flex flex-col items-center'>
       <img
@@ -13,8 +11,8 @@ export default function ErrorBoundary() {
         alt='animated dog in burning room'
         className='h-1/6 w-1/6 rounded'
       />
-      <h1 className='mt-8'>Something went wrong...</h1>
-      <h2 className='text-red-600'>{error.message}</h2>
+      <h1 className='mt-8 text-red-600'>Yikes!</h1>
+      <h2>You broke it...</h2>
 
       <Link
         to='/'

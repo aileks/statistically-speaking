@@ -5,12 +5,9 @@ export default function DeleteModal({ onDelete }) {
 
   return (
     <div className='p-6'>
-      <h2 className='text-xl font-semibold'>Hold Up!</h2>
+      <h2 className='text-xl font-semibold'>Are you sure?</h2>
 
-      <p className='mt-2'>
-        Are you sure you want to delete this post?{' '}
-        <span className='font-bold italic'>This action cannot be undone</span>
-      </p>
+      <p className='mt-2 font-bold italic'>This action cannot be undone!</p>
 
       <div className='mt-4 flex justify-end space-x-4'>
         <button

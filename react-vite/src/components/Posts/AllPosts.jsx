@@ -15,10 +15,8 @@ export default function AllPosts({ posts }) {
   const [editingPostId, setEditingPostId] = useState(-1);
 
   useEffect(() => {
-    /*
-     * forces a re-render so when a post is deleted from the SinglePost view
-     * the post is removed from the AllPosts view and the list of posts is updated
-     */
+    /* forces a re-render so when a post is deleted from the SinglePost view
+     the post is removed from the AllPosts view and the list of posts is updated */
   }, [fetcher.data]);
 
   const handleEdit = (e, post) => {
@@ -91,6 +89,10 @@ export default function AllPosts({ posts }) {
                 </p>
 
                 <p className='text-sm'>{post.body}</p>
+
+                <p className='text-sm text-slate-500 self-end mb-0'>
+                  {post.comments.length} comments
+                </p>
               </Link>
             }
           </div>
