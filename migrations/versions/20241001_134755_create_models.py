@@ -23,31 +23,6 @@ depends_on = None
 
 def upgrade():
     op.create_table(
-        "comments",
-        sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("body", sa.Text(), nullable=False),
-        sa.Column(
-            "created_at", sa.DateTime(), server_default=sa.func.now(), nullable=False
-        ),
-        sa.Column(
-            "updated_at",
-            sa.DateTime(),
-            server_default=sa.func.now(),
-            onupdate=sa.func.now(),
-        ),
-        sa.Column("user_id", sa.Integer(), nullable=False),
-        sa.Column("post_id", sa.Integer(), nullable=False),  # Added post_id
-        sa.ForeignKeyConstraint(
-            ["user_id"],
-            ["users.id"],
-        ),
-        sa.ForeignKeyConstraint(
-            ["post_id"],
-            ["posts.id"],
-        ),
-        sa.PrimaryKeyConstraint("id"),
-    )
-    op.create_table(
         "posts",
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("title", sa.String(100), nullable=False),
@@ -96,16 +71,41 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint("id"),
     )
+    op.create_table(
+        "comments",
+        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("body", sa.Text(), nullable=False),
+        sa.Column(
+            "created_at", sa.DateTime(), server_default=sa.func.now(), nullable=False
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(),
+            server_default=sa.func.now(),
+            onupdate=sa.func.now(),
+        ),
+        sa.Column("user_id", sa.Integer(), nullable=False),
+        sa.Column("post_id", sa.Integer(), nullable=False),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            ["users.id"],
+        ),
+        sa.ForeignKeyConstraint(
+            ["post_id"],
+            ["posts.id"],
+        ),
+        sa.PrimaryKeyConstraint("id"),
+    )
 
     if environment == "production":
-        op.execute(f"ALTER TABLE comments SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE posts SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE graphs SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE saves SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE comments SET SCHEMA {SCHEMA};")
 
 
 def downgrade():
+    op.drop_table("comments")
     op.drop_table("saves")
     op.drop_table("graphs")
     op.drop_table("posts")
-    op.drop_table("comments")
