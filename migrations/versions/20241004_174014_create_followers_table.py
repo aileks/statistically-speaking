@@ -22,7 +22,7 @@ depends_on = None
 
 
 def upgrade():
-    followers_table = op.create_table(
+    op.create_table(
         "followers",
         sa.Column("follower_id", sa.Integer(), nullable=False),
         sa.Column("followed_id", sa.Integer(), nullable=False),
@@ -36,9 +36,6 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint("follower_id", "followed_id"),
     )
-
-    if environment == "production":
-        op.execute(f"ALTER TABLE followers SET SCHEMA {SCHEMA};")
 
     with op.batch_alter_table(
         "comments", schema=SCHEMA if environment == "production" else None
@@ -71,6 +68,9 @@ def upgrade():
         )
         batch_op.add_column(sa.Column("bio", sa.Text(), nullable=True))
         batch_op.add_column(sa.Column("field", sa.String(length=40), nullable=True))
+
+    if environment == "production":
+        op.execute(f"ALTER TABLE followers SET SCHEMA {SCHEMA};")
 
 
 def downgrade():

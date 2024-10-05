@@ -12,9 +12,13 @@ posts = Blueprint("posts", __name__)
 
 @posts.route("")
 def get_posts() -> list[dict[str, str]]:
-    all_posts: list[Post] = Post.query.order_by(
-        Post.created_at.desc(), Post.id.desc()
-    ).all()
+    try:
+        all_posts: list[Post] = Post.query.order_by(
+            Post.created_at.desc(), Post.id.desc()
+        ).all()
+    except Exception as e:
+        print(f"\n\n\nError fetching posts: {e}\n\n\n")
+        return []
     return [post.to_dict() for post in all_posts]
 
 
