@@ -8,7 +8,7 @@ from . import Save, Comment, Post
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 
 followers: Table = db.Table(
-    "followers",
+    add_prefix_for_prod("followers"),
     db.Model.metadata,
     db.Column(
         "follower_id", db.Integer, db.ForeignKey(add_prefix_for_prod("users.id"))
