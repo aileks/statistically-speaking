@@ -74,11 +74,11 @@ class User(db.Model, UserMixin):
     def unfollow(self, user: "User") -> None:
         self.following.remove(user)
 
-    # def is_following(self, user: "User") -> bool:
-    #     return self.following.filter(followers.c.followed_id == user.id).count() > 0
-    #
-    # def followers_count(self) -> int:
-    #     return self.followers.count()
+    def is_following(self, user: "User") -> bool:
+        return self.following.filter(followers.c.followed_id == user.id).count() > 0
+
+    def followers_count(self) -> int:
+        return self.followers.count()
 
     def to_dict(self) -> dict[str, Union[int, str, list[dict[str, int]]]]:
         return {
