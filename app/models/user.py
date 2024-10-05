@@ -16,6 +16,7 @@ followers: Table = db.Table(
     db.Column(
         "followed_id", db.Integer, db.ForeignKey(add_prefix_for_prod("users.id"))
     ),
+    schema={SCHEMA} if environment == "production" else None,
 )
 
 
