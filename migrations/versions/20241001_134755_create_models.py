@@ -96,15 +96,31 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint("id"),
     )
+    op.create_table(
+        "followers",
+        sa.Column("follower_id", sa.Integer(), nullable=False),
+        sa.Column("followed_id", sa.Integer(), nullable=False),
+        sa.ForeignKeyConstraint(
+            ["followed_id"],
+            ["users.id"],
+        ),
+        sa.ForeignKeyConstraint(
+            ["follower_id"],
+            ["users.id"],
+        ),
+        sa.PrimaryKeyConstraint("follower_id", "followed_id"),
+    )
 
     if environment == "production":
         op.execute(f"ALTER TABLE posts SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE graphs SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE saves SET SCHEMA {SCHEMA};")
         op.execute(f"ALTER TABLE comments SET SCHEMA {SCHEMA};")
+        op.execute(f"ALTER TABLE followers SET SCHEMA {SCHEMA};")
 
 
 def downgrade():
+    op.drop_table("followers")
     op.drop_table("comments")
     op.drop_table("saves")
     op.drop_table("graphs")

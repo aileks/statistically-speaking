@@ -8,7 +8,7 @@ from . import Save, Comment, Post
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 
 followers: Table = db.Table(
-    add_prefix_for_prod("followers"),
+    "followers",
     db.Model.metadata,
     db.Column(
         "follower_id", db.Integer, db.ForeignKey(add_prefix_for_prod("users.id"))
@@ -83,5 +83,5 @@ class User(db.Model, UserMixin):
             "bio": self.bio,
             "field": self.field,
             "saves": [save.to_dict() for save in self.saves],
-            "follows": [user.id for user in self.following],
+            "following": [user.id for user in self.following],
         }
