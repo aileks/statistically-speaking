@@ -16,7 +16,7 @@ export default function AllPosts({ posts }) {
 
   useEffect(() => {
     /* forces a re-render so when a post is deleted from the SinglePost view
-     the post is removed from the AllPosts view and the list of posts is updated */
+     it's also removed from the AllPosts view and the list is properly updated */
   }, [fetcher.data]);
 
   const handleEdit = (e, post) => {
@@ -88,7 +88,7 @@ export default function AllPosts({ posts }) {
                   className='w-fit mb-3 text-sm text-slate-500 hover:text-slate-600 hover:underline'
                   onClick={e => e.stopPropagation()}
                   to={
-                    user && post.user.username === user.username ?
+                    user && post.user.username === user?.username ?
                       '/profile'
                     : `/user/${post.user.id}`
                   }
