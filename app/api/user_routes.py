@@ -38,7 +38,7 @@ def follow(id):
     current_user.follow(user_to_follow)
 
     db.session.commit()
-    return {"message": "Followed successfully"}
+    return current_user.to_dict()
 
 
 @user_routes.route("/<int:id>/follow", methods=["DELETE"])
@@ -52,4 +52,4 @@ def unfollow(id):
     current_user.unfollow(user_to_unfollow)
 
     db.session.commit()
-    return {"message": "Unfollowed successfully"}
+    return current_user.to_dict()

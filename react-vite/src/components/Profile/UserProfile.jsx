@@ -29,7 +29,7 @@ export default function UserProfile() {
 
         {currentUser && (
           <FollowButton
-            user={user}
+            userId={user.id}
             currentUser={currentUser}
           />
         )}
