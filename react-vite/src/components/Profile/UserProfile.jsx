@@ -6,6 +6,7 @@ import FollowButton from '../FollowButton';
 export default function UserProfile() {
   const user = useLoaderData();
   const currentUser = useSelector(state => state.session.user);
+  console.log(user);
 
   return (
     <div className='container'>

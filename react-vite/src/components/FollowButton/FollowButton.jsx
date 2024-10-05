@@ -5,12 +5,12 @@ import { useFetcher } from 'react-router-dom';
 export default function FollowButton({ userId, currentUser }) {
   const fetcher = useFetcher();
   const [isFollowing, setIsFollowing] = useState(
-    currentUser.following.includes(userId)
+    currentUser?.following?.includes(userId)
   );
 
   useEffect(() => {
-    setIsFollowing(currentUser.following.includes(userId));
-  }, [currentUser.following, userId]);
+    setIsFollowing(currentUser.following?.includes(userId));
+  }, [currentUser?.following, userId]);
 
   const handleFollow = async () => {
     setIsFollowing(prevState => !prevState);
