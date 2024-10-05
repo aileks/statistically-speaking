@@ -4,6 +4,8 @@ import { BiLeftArrowAlt } from 'react-icons/bi';
 export default function ErrorBoundary() {
   const error = useRouteError();
 
+  console.error('ERROR:', error);
+
   return (
     <div className='mt-44 flex flex-col items-center'>
       <img

@@ -44,7 +44,15 @@ class User(db.Model, UserMixin):
         secondary=followers,
         primaryjoin=(followers.c.follower_id == id),
         secondaryjoin=(followers.c.followed_id == id),
-        backref=db.backref(add_prefix_for_prod("followers"), lazy="dynamic"),
+        back_populates="followers",
+        lazy="dynamic",
+    )
+    followers = db.relationship(
+        "User",
+        secondary=followers,
+        primaryjoin=(followers.c.followed_id == id),
+        secondaryjoin=(followers.c.follower_id == id),
+        back_populates="following",
         lazy="dynamic",
     )
 
