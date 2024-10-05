@@ -3,7 +3,7 @@ import { BiLeftArrowAlt } from 'react-icons/bi';
 
 export default function NotFound() {
   return (
-    <div className='flex flex-col items-center mt-32'>
+    <div className='mt-32 flex flex-col items-center'>
       <img
         src='/facepalm.png'
         alt='blue facepalming smiley'

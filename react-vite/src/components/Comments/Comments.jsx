@@ -103,7 +103,7 @@ export default function Comments({ post }) {
             name='body'
             value={commentBody}
             onChange={e => setCommentBody(e.target.value)}
-            className='w-full p-2 border border-gray-300 rounded-md'
+            className='w-full rounded-md border border-gray-300 p-2'
             rows={4}
             placeholder='Any thoughts?'
           ></textarea>
@@ -113,7 +113,7 @@ export default function Comments({ post }) {
 
           <button
             onClick={handleAddComment}
-            className='btn mt-2 text-sm self-end'
+            className='mt-2 self-end text-sm btn'
           >
             Add Comment
           </button>
@@ -121,7 +121,7 @@ export default function Comments({ post }) {
       )}
 
       {post.comments.length === 0 ?
-        <p className='text-gray-800 font-semibold'>No comments yet</p>
+        <p className='font-semibold text-gray-800'>No comments yet</p>
       : post.comments.map(comment => (
           <div
             key={comment.id}
@@ -136,7 +136,7 @@ export default function Comments({ post }) {
                   name='body'
                   value={editedCommentBody}
                   onChange={e => setEditedCommentBody(e.target.value)}
-                  className='w-full p-2 border border-gray-300 rounded-md'
+                  className='w-full rounded-md border border-gray-300 p-2'
                   rows={4}
                   placeholder='Edit your comment...'
                 ></textarea>
@@ -146,7 +146,7 @@ export default function Comments({ post }) {
 
                 <button
                   type='submit'
-                  className='btn mt-2 text-sm self-end'
+                  className='mt-2 self-end text-sm btn'
                 >
                   Update Comment
                 </button>

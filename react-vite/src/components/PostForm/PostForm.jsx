@@ -105,7 +105,7 @@ export default function PostForm() {
           className='rounded-md border border-gray-400 bg-white p-3'
         />
         {errors.title && (
-          <p className='text-red-500 text-sm italic'>{errors.title}</p>
+          <p className='text-sm italic text-red-500'>{errors.title}</p>
         )}
 
         <textarea
@@ -117,7 +117,7 @@ export default function PostForm() {
           className='rounded-md border border-gray-400 bg-white p-3'
         />
         {errors.body && (
-          <p className='text-red-500 text-sm italic'>{errors.body}</p>
+          <p className='text-sm italic text-red-500'>{errors.body}</p>
         )}
 
         <label>
@@ -125,7 +125,7 @@ export default function PostForm() {
           <select
             value={graphType}
             onChange={e => setGraphType(e.target.value)}
-            className='rounded-md border border-gray-400 bg-white px-1 ml-2'
+            className='ml-2 rounded-md border border-gray-400 bg-white px-1'
           >
             <option value='table'>Table</option>
             <option value='bar'>Bar</option>
@@ -143,23 +143,23 @@ export default function PostForm() {
             ref={fileInputRef}
           />
 
-          <span className='font-semibold mt-2 text-xs text-orange-600 self-center italic'>
+          <span className='mt-2 self-center text-xs font-semibold italic text-orange-600'>
             By uploading your data, you confirm that it has been cleaned and
             that any discrepancies or errors are solely due to the contents of
             your file.
           </span>
         </div>
         {errors.csvFile && (
-          <p className='text-red-500 text-sm italic'>{errors.csvFile}</p>
+          <p className='text-sm italic text-red-500'>{errors.csvFile}</p>
         )}
 
         {errors.message && (
-          <p className='text-red-500 text-sm italic'>{errors.message}</p>
+          <p className='text-sm italic text-red-500'>{errors.message}</p>
         )}
 
         <button
           type='submit'
-          className='max-w-fit mt-3 self-end btn'
+          className='mt-3 max-w-fit self-end btn'
         >
           Post
         </button>

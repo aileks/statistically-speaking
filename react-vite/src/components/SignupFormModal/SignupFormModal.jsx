@@ -75,7 +75,7 @@ function SignupFormModal() {
       <h1>Sign Up</h1>
 
       {errors.message && (
-        <p className='text-red-500 text-sm italic'>{errors.message}</p>
+        <p className='text-sm italic text-red-500'>{errors.message}</p>
       )}
 
       <form
@@ -95,7 +95,7 @@ function SignupFormModal() {
             />
           </label>
           {errors.firstName && (
-            <p className='text-red-500 text-sm italic'>{errors.firstName}</p>
+            <p className='text-sm italic text-red-500'>{errors.firstName}</p>
           )}
 
           <label className='flex flex-col'>
@@ -110,7 +110,7 @@ function SignupFormModal() {
             />
           </label>
           {errors.lastName && (
-            <p className='text-red-500 text-sm italic'>{errors.lastName}</p>
+            <p className='text-sm italic text-red-500'>{errors.lastName}</p>
           )}
         </div>
 
@@ -126,7 +126,7 @@ function SignupFormModal() {
           />
         </label>
         {errors.email && (
-          <p className='text-red-500 text-sm italic'>{errors.email}</p>
+          <p className='text-sm italic text-red-500'>{errors.email}</p>
         )}
 
         <label className='flex flex-col w-[440px]'>
@@ -141,7 +141,7 @@ function SignupFormModal() {
           />
         </label>
         {errors.username && (
-          <p className='text-red-500 text-sm italic'>{errors.username}</p>
+          <p className='text-sm italic text-red-500'>{errors.username}</p>
         )}
 
         <label className='flex flex-col'>
@@ -155,7 +155,7 @@ function SignupFormModal() {
           />
         </label>
         {errors.bio && (
-          <p className='text-red-500 text-sm italic'>{errors.bio}</p>
+          <p className='text-sm italic text-red-500'>{errors.bio}</p>
         )}
 
         <label className='flex flex-col'>
@@ -168,7 +168,7 @@ function SignupFormModal() {
           />
         </label>
         {errors.field && (
-          <p className='text-red-500 text-sm italic'>{errors.field}</p>
+          <p className='text-sm italic text-red-500'>{errors.field}</p>
         )}
 
         <label className='flex flex-col'>
@@ -196,7 +196,7 @@ function SignupFormModal() {
           />
         </label>
         {errors.confirmPassword && (
-          <p className='text-red-500 text-sm italic'>
+          <p className='text-sm italic text-red-500'>
             {errors.confirmPassword}
           </p>
         )}

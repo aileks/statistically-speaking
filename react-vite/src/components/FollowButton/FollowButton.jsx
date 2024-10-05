@@ -25,7 +25,7 @@ export default function FollowButton({ userId, currentUser }) {
   return (
     <button
       onClick={handleFollow}
-      className='flex rounded-md border w-fit items-center justify-center gap-1 px-2 py-1 cursor-pointer hover:bg-gray-200 transition-colors duration-200'
+      className='flex w-fit cursor-pointer items-center justify-center gap-1 rounded-md border px-2 py-1 transition-colors duration-200 hover:bg-gray-200'
     >
       <RiUserFollowFill
         className={`text-2xl ${isFollowing ? 'text-blue-600' : 'text-gray-500'}`}

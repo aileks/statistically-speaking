@@ -20,31 +20,31 @@ export default function MyProfile() {
 
   return (
     <div className='container mx-auto px-4'>
-      <h2 className='text-2xl font-bold mb-4'>Profile</h2>
+      <h2 className='mb-4 text-2xl font-bold'>Profile</h2>
 
       {userSaves.length === 0 ?
-        <h3 className='text-center mt-8'>
+        <h3 className='mt-8 text-center'>
           You haven&apos;t saved any posts yet!
         </h3>
       : <h3>Saved Posts</h3>}
 
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+      <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
         {userSaves.map(post => (
           <Link
             key={post.id}
-            className='card relative'
+            className='relative card'
             to={`/post/${post.id}`}
           >
-            <div className='w-fit absolute top-3 right-3'>
+            <div className='absolute top-3 right-3 w-fit'>
               <SaveIcon
                 post={post}
                 user={user}
               />
             </div>
 
-            <h3 className='text-xl font-semibold mb-2'>{post.title}</h3>
+            <h3 className='mb-2 text-xl font-semibold'>{post.title}</h3>
 
-            <p className='text-gray-600 overflow-hidden'>
+            <p className='overflow-hidden text-gray-600'>
               {truncateText(post.body, 100)}
             </p>
           </Link>

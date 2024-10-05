@@ -17,12 +17,12 @@ export default function UserProfile() {
           </h2>
         </section>
 
-        <p className='text-gray-400 text-center mb-0'>
+        <p className='mb-0 text-center text-gray-400'>
           {user.followersCount}{' '}
           {user.followersCount === 1 ? 'Follower' : 'Followers'}
         </p>
 
-        <section className='mb-4 pb-2 flex gap-4 justify-center border-b border-amber-400'>
+        <section className='mb-4 flex justify-center gap-4 border-b border-amber-400 pb-2'>
           <h4 className='text-gray-600'>{user.field}</h4>
           <h4 className='text-gray-600'>{user.email}</h4>
         </section>
@@ -35,8 +35,8 @@ export default function UserProfile() {
         )}
 
         <section className='mt-4 mb-0'>
-          <h3 className='underline mb-0'>About Me</h3>
-          <p className='text-gray-800 font-medium'>{user.bio}</p>
+          <h3 className='mb-0 underline'>About Me</h3>
+          <p className='font-medium text-gray-800'>{user.bio}</p>
         </section>
       </div>
     </div>

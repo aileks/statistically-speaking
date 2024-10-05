@@ -85,7 +85,7 @@ export default function AllPosts({ posts }) {
                 <h3 className='font-bold underline'>{post.title}</h3>
 
                 <Link
-                  className='w-fit mb-3 text-sm text-slate-500 hover:text-slate-600 hover:underline'
+                  className='mb-3 w-fit text-sm text-slate-500 hover:text-slate-600 hover:underline'
                   onClick={e => e.stopPropagation()}
                   to={
                     user && post.user.username === user?.username ?
@@ -98,14 +98,14 @@ export default function AllPosts({ posts }) {
 
                 <p className='text-sm'>{post.body}</p>
 
-                <p className='text-sm text-slate-500 self-end mb-0 hover:text-slate-600 hover:underline'>
+                <p className='mb-0 self-end text-sm text-slate-500 hover:text-slate-600 hover:underline'>
                   {post.comments.length} comments
                 </p>
               </Link>
             }
           </div>
         ))
-      : <h3 className='text-center mt-8'>No posts found</h3>}
+      : <h3 className='mt-8 text-center'>No posts found</h3>}
     </div>
   );
 }

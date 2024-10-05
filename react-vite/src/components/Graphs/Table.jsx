@@ -3,14 +3,14 @@ export default function Table({ data }) {
   const rows = data.data;
 
   return (
-    <div className='overflow-auto max-h-96 mt-8'>
-      <table className='min-w-full bg-white border border-gray-300'>
+    <div className='mt-8 max-h-96 overflow-auto'>
+      <table className='min-w-full border border-gray-300 bg-white'>
         <thead>
           <tr className='bg-gray-100'>
             {columns.map((column, index) => (
               <th
                 key={index}
-                className='px-4 py-2 border-b text-left'
+                className='border-b px-4 py-2 text-left'
               >
                 {column}
               </th>
@@ -26,7 +26,7 @@ export default function Table({ data }) {
               {row.map((cell, cellIndex) => (
                 <td
                   key={cellIndex}
-                  className='px-4 py-2 border-b'
+                  className='border-b px-4 py-2'
                 >
                   {cell}
                 </td>

@@ -94,7 +94,7 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
         <select
           value={editedType}
           onChange={e => setEditedType(e.target.value)}
-          className='rounded-md border border-gray-400 bg-white px-1 ml-2'
+          className='ml-2 rounded-md border border-gray-400 bg-white px-1'
         >
           <option value='table'>Table</option>
           <option value='bar'>Bar</option>

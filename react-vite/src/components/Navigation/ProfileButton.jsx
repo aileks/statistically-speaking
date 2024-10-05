@@ -67,7 +67,7 @@ function ProfileButton() {
                 className='w-fit'
               >
                 <Link
-                  className='text-blue-600 hover:text-blue-800 transition-colors duration-200'
+                  className='text-blue-600 transition-colors duration-200 hover:text-blue-800'
                   to='/profile'
                 >
                   View Saved Posts

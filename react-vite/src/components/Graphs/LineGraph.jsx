@@ -130,7 +130,7 @@ export default function LineGraph({ data }) {
     <div className='mt-6 flex items-center justify-center overflow-x-auto rounded border border-gray-400'>
       <svg
         ref={svgRef}
-        className='w-full h-[500px] p-2'
+        className='w-full p-2 h-[500px]'
       ></svg>
     </div>
   );
