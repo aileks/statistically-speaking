@@ -32,8 +32,8 @@ def user(id):
 def follow(id):
     user_to_follow = User.query.get(id)
 
-    if current_user.is_following(user_to_follow):
-        return {}, 400
+    # if current_user.is_following(user_to_follow):
+    #     return {"message": "Already following"}, 400
 
     current_user.follow(user_to_follow)
 
@@ -46,8 +46,8 @@ def follow(id):
 def unfollow(id):
     user_to_unfollow = User.query.get(id)
 
-    if not current_user.is_following(user_to_unfollow):
-        return {"errors": "User is not followed"}, 400
+    # if not current_user.is_following(user_to_unfollow):
+    #     return {"errors": "User is not followed"}, 400
 
     current_user.unfollow(user_to_unfollow)
 
