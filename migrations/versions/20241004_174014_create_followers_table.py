@@ -39,14 +39,6 @@ def upgrade():
 
     if environment == "production":
         op.execute(f"ALTER TABLE followers SET SCHEMA {SCHEMA};")
-        op.execute(
-            f"ALTER TABLE {SCHEMA}.followers DROP CONSTRAINT followers_followed_id_fkey, "
-            f"ADD CONSTRAINT followers_followed_id_fkey FOREIGN KEY (followed_id) REFERENCES {SCHEMA}.users(id);"
-        )
-        op.execute(
-            f"ALTER TABLE {SCHEMA}.followers DROP CONSTRAINT followers_follower_id_fkey, "
-            f"ADD CONSTRAINT followers_follower_id_fkey FOREIGN KEY (follower_id) REFERENCES {SCHEMA}.users(id);"
-        )
 
     with op.batch_alter_table(
         "comments", schema=SCHEMA if environment == "production" else None
