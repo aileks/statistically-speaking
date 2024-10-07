@@ -24,9 +24,7 @@ def user(id):
     Query for a user by id and returns that user in a dictionary
     """
     user = User.query.get(id)
-    user_dict = user.to_dict()
-    user_dict["followersCount"] = user.followers_count()
-    return user_dict
+    return user.to_dict()
 
 
 @user_routes.route("/<int:id>/follow", methods=["POST"])

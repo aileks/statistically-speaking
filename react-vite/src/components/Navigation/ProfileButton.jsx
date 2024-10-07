@@ -70,7 +70,7 @@ function ProfileButton() {
                   className='text-blue-600 transition-colors duration-200 hover:text-blue-800'
                   to='/profile'
                 >
-                  View Saved Posts
+                  My Profile
                 </Link>
               </li>
 

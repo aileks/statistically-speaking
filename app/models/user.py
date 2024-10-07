@@ -90,5 +90,8 @@ class User(db.Model, UserMixin):
             "bio": self.bio,
             "field": self.field,
             "saves": [save.to_dict() for save in self.saves],
-            "following": [user.id for user in self.following],
+            "followCount": self.followers_count(),
+            "following": [
+                {"id": user.id, "username": user.username} for user in self.following
+            ],
         }
