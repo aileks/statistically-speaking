@@ -22,9 +22,30 @@ def seed_graphs() -> None:
         post_id=3,
     )
 
+    graph4 = Graph(
+        type="bar",
+        url="https://mycapstonestorage.s3.amazonaws.com/social_media.csv",
+        post_id=4,
+    )
+
+    graph5 = Graph(
+        type="line",
+        url="https://mycapstonestorage.s3.amazonaws.com/ecommerce.csv",
+        post_id=5,
+    )
+
+    graph6 = Graph(
+        type="table",
+        url="https://mycapstonestorage.s3.amazonaws.com/energy.csv",
+        post_id=6,
+    )
+
     db.session.add(graph1)
     db.session.add(graph2)
     db.session.add(graph3)
+    db.session.add(graph4)
+    db.session.add(graph5)
+    db.session.add(graph6)
     db.session.commit()
 
 

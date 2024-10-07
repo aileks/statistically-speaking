@@ -20,6 +20,8 @@ export default function SinglePost() {
   const fetcher = useFetcher();
   const user = useSelector(state => state.session.user);
   const graphType = post?.graph?.type;
+  const col1 = post?.graph?.col1;
+  const col2 = post?.graph?.col2;
   const [editingPostId, setEditingPostId] = useState(-1);
 
   const handleEdit = (e, post) => {
@@ -93,8 +95,20 @@ export default function SinglePost() {
             )}
 
             {graphType === 'table' && <Table data={post.dataframe} />}
-            {graphType === 'bar' && <BarGraph data={post.dataframe} />}
-            {graphType === 'line' && <LineGraph data={post.dataframe} />}
+            {graphType === 'bar' && (
+              <BarGraph
+                data={post.dataframe}
+                col1={col1}
+                col2={col2}
+              />
+            )}
+            {graphType === 'line' && (
+              <LineGraph
+                data={post.dataframe}
+                col1={col1}
+                col2={col2}
+              />
+            )}
           </>
         }
       </div>

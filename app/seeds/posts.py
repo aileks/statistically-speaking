@@ -30,9 +30,36 @@ def seed_posts() -> None:
         updated_at=datetime.now(),
     )
 
+    post4 = Post(
+        title="Social Media Usage Insights",
+        body="A deep dive into social media usage data reveals that platforms like Instagram, Facebook, and Twitter continue to dominate user engagement, especially among younger demographics. Peak usage times align with weekends and late evenings, indicating when users are most active. The analysis shows that visual content garners higher engagement compared to text-only posts, highlighting the importance of image and video-centric content. The findings suggest that brands and content creators can maximize reach by targeting these peak times and focusing on multimedia formats to attract and retain audience attention.",
+        user_id=4,
+        created_at=datetime.now(),
+        updated_at=datetime.now(),
+    )
+
+    post5 = Post(
+        title="E-commerce Growth Post-2020",
+        body="Data on e-commerce transactions highlights a surge in online shopping post-2020, with categories like apparel, home goods, and electronics leading the charge. The trend shows increased demand for convenience and home delivery options, as well as a shift toward sustainable products. Interestingly, seasonal trends indicate high spikes in spending during end-of-year holidays and back-to-school seasons. This data offers valuable insights for retailers to enhance digital marketing efforts and improve logistics for meeting consumer expectations in a rapidly evolving e-commerce landscape.",
+        user_id=5,
+        created_at=datetime.now(),
+        updated_at=datetime.now(),
+    )
+
+    post6 = Post(
+        title="Renewable Energy Adoption Patterns",
+        body="The dataset reveals significant growth in renewable energy adoption, with solar and wind energy showing the fastest uptake among residential and commercial sectors. Adoption rates are highest in regions with supportive government incentives, and data indicates a strong correlation between household income and likelihood of renewable energy use. This information is essential for understanding how policy, economic status, and environmental awareness drive the transition to cleaner energy sources, providing key data for future sustainability efforts.",
+        user_id=6,
+        created_at=datetime.now(),
+        updated_at=datetime.now(),
+    )
+
     db.session.add(post1)
     db.session.add(post2)
     db.session.add(post3)
+    db.session.add(post4)
+    db.session.add(post5)
+    db.session.add(post6)
     db.session.commit()
 
 
