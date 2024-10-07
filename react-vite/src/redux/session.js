@@ -63,6 +63,14 @@ export const thunkLogout = () => async dispatch => {
   dispatch(removeUser());
 };
 
+export const thunkRefreshUser = () => async dispatch => {
+  const response = await fetch('/api/auth/'); // Adjust the endpoint if needed
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(setUser(data));
+  }
+};
+
 const initialState = { user: null };
 
 function sessionReducer(state = initialState, action) {

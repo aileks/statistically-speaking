@@ -1,18 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RiUserFollowFill } from 'react-icons/ri';
 import { useFetcher } from 'react-router-dom';
+import { thunkRefreshUser } from '../../redux/session.js';
+import { useDispatch } from 'react-redux';
 
 export default function FollowButton({ userId, currentUser }) {
+  const dispatch = useDispatch();
   const fetcher = useFetcher();
   const [isFollowing, setIsFollowing] = useState(
     currentUser?.following?.some(followedUser => followedUser.id === userId)
   );
 
-  // useEffect(() => {
-  //   setIsFollowing(
-  //     currentUser.following?.some(followedUser => followedUser.id === userId)
-  //   );
-  // }, [currentUser?.following, userId]);
+  useEffect(() => {
+    dispatch(thunkRefreshUser());
+  }, [dispatch]);
 
   const handleFollow = async () => {
     setIsFollowing(prevState => !prevState);

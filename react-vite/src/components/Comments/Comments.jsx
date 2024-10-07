@@ -156,9 +156,9 @@ export default function Comments({ post }) {
                   to={
                     user && user.username === comment.user.username ?
                       '/profile'
-                    : `/users/${comment.user.id}`
+                    : `/user/${comment.user.id}`
                   }
-                  className='text-sm text-slate-500'
+                  className='text-sm text-slate-500 hover:text-slate-600 hover:underline'
                 >
                   {comment.user.username}
                 </Link>
