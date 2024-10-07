@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { RxAvatar } from 'react-icons/rx';
 import { useSelector } from 'react-redux';
 import FollowButton from '../FollowButton';
@@ -57,13 +57,18 @@ export default function UserProfile() {
 
           {posts.length > 0 ?
             posts?.map(post => (
-              <div
+              <Link
+                to={`/post/${post.id}`}
                 key={post.id}
-                className='card'
               >
-                <h3 className='text-gray-800'>{post?.title}</h3>
-                <p className='text-gray-800'>{truncateText(post.body, 300)}</p>
-              </div>
+                <div className='card'>
+                  <h3 className='text-gray-800'>{post?.title}</h3>
+
+                  <p className='text-gray-800'>
+                    {truncateText(post.body, 300)}
+                  </p>
+                </div>
+              </Link>
             ))
           : <p className='text-center font-semibold'>
               User hasn&apos;t posted yet.
