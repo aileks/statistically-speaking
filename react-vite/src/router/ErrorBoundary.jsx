@@ -14,7 +14,7 @@ export default function ErrorBoundary() {
         className='h-1/6 w-1/6 rounded'
       />
       <h1 className='mt-8 text-red-600'>Yikes!</h1>
-      <h2>{error.message}</h2>
+      <h2 className='mt-1'>You broke it...</h2>
 
       <Link
         to='/'
