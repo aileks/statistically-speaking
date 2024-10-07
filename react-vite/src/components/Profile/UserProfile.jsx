@@ -52,16 +52,23 @@ export default function UserProfile() {
           </section>
         </div>
 
-        <section className=''>
-          {posts?.map(post => (
-            <div
-              key={post.id}
-              className='card'
-            >
-              <h3 className='text-gray-800'>{post?.title}</h3>
-              <p className='text-gray-800'>{truncateText(post.body, 300)}</p>
-            </div>
-          ))}
+        <section className='mt-1'>
+          <h2 className='underline'>Recent Posts</h2>
+
+          {posts.length > 0 ?
+            posts?.map(post => (
+              <div
+                key={post.id}
+                className='card'
+              >
+                <h3 className='text-gray-800'>{post?.title}</h3>
+                <p className='text-gray-800'>{truncateText(post.body, 300)}</p>
+              </div>
+            ))
+          : <p className='text-center font-semibold'>
+              User hasn&apos;t posted yet.
+            </p>
+          }
         </section>
       </div>
     )
