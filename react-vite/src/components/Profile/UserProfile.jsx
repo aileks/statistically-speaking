@@ -8,7 +8,7 @@ export default function UserProfile() {
   const { user, posts } = useLoaderData();
   const currentUser = useSelector(state => state.session.user);
 
-  if (user.id === currentUser.id) {
+  if (currentUser && user.id === currentUser.id) {
     navigate('/profile');
   }
 
