@@ -58,19 +58,19 @@ export default function SinglePost() {
               className='mb-3 w-fit text-sm text-slate-500 hover:text-slate-600 hover:underline'
               onClick={e => e.stopPropagation()}
               to={
-                user && post.user.username === user?.username ?
+                user && post.user?.username === user?.username ?
                   '/profile'
-                : `/user/${post.user.id}`
+                : `/user/${post.user?.id}`
               }
             >
-              by {post.user.username}
+              by {post.user?.username}
             </Link>
 
             <p className='text-lg text-gray-800'>{post.body}</p>
 
             {user && (
               <>
-                {user.id !== post.user.id ?
+                {user?.id !== post.user.id ?
                   <SaveIcon
                     post={post}
                     user={user}
