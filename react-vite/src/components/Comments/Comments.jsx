@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useFetcher, useNavigate } from 'react-router-dom';
+import { Link, useFetcher, useNavigate } from 'react-router-dom';
 import { useModal } from '../../context/Modal.jsx';
 import DeleteModal from '../DeleteModal/index.js';
 
@@ -152,9 +152,16 @@ export default function Comments({ post }) {
                 </button>
               </form>
             : <>
-                <p className='text-sm text-slate-500'>
+                <Link
+                  to={
+                    user.username === comment.user.username ?
+                      '/profile'
+                    : `/users/${comment.user.id}`
+                  }
+                  className='text-sm text-slate-500'
+                >
                   {comment.user.username}
-                </p>
+                </Link>
 
                 <p className='text-gray-800'>{comment.body}</p>
 
