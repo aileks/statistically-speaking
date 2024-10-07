@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { RiUserFollowFill } from 'react-icons/ri';
 import { useFetcher } from 'react-router-dom';
 
 export default function FollowButton({ userId, currentUser }) {
   const fetcher = useFetcher();
   const [isFollowing, setIsFollowing] = useState(
-    currentUser?.following?.includes(userId)
+    currentUser?.following?.some(followedUser => followedUser.id === userId)
   );
 
-  useEffect(() => {
-    setIsFollowing(currentUser.following?.includes(userId));
-  }, [currentUser?.following, userId]);
+  // useEffect(() => {
+  //   setIsFollowing(
+  //     currentUser.following?.some(followedUser => followedUser.id === userId)
+  //   );
+  // }, [currentUser?.following, userId]);
 
   const handleFollow = async () => {
     setIsFollowing(prevState => !prevState);

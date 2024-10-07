@@ -30,8 +30,8 @@ export default function UserProfile() {
           </section>
 
           <p className='mb-0 text-center text-gray-400'>
-            {user?.followersCount}{' '}
-            {user?.followersCount === 1 ? 'Follower' : 'Followers'}
+            {user?.followCount}{' '}
+            {user?.followCount === 1 ? 'Follower' : 'Followers'}
           </p>
 
           <section className='mb-4 flex justify-center gap-4 border-b border-amber-400 pb-2'>

@@ -36,7 +36,7 @@ export default function MyProfile() {
                 className='mb-2'
               >
                 <Link
-                  to={`/profile/${follow.id}`}
+                  to={`/user/${follow.id}`}
                   className='text-blue-600 transition-all duration-200 hover:text-blue-800 hover:underline'
                 >
                   <RiUserFollowFill className='text-2xl text-blue-600 inline-block mr-1' />
