@@ -4,7 +4,7 @@ from flask import Blueprint, request
 from flask_login import current_user
 
 from app.models import db, Post, Save, Graph, Comment
-from app.upload import upload_file_to_s3, remove_file_from_s3
+from app.upload import upload_file_to_s3, remove_file_from_s3, get_unique_filename
 from app.utils import get_data, check_data
 
 posts = Blueprint("posts", __name__)
