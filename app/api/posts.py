@@ -69,7 +69,7 @@ def create_post() -> Union[dict[str, str], tuple[dict[str, str], int]]:
 
     try:
         db.session.add(new_post)
-        db.session.flush()  # Flush to get new_post.id for new_graph
+        db.session.flush()
 
         new_graph.post_id = new_post.id
 

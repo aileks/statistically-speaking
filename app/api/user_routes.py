@@ -1,7 +1,9 @@
+import collections
+
 from flask import Blueprint
 from flask_login import login_required, current_user
 
-from app.models import db, User
+from app.models import db, User, Post
 
 user_routes = Blueprint("users", __name__)
 
@@ -53,3 +55,14 @@ def unfollow(id):
 
     db.session.commit()
     return current_user.to_dict()
+
+
+@user_routes.route("/<int:id>/posts")
+def user_posts(id):
+    posts: collections.Iterable = (
+        Post.query.filter(Post.user_id == id)
+        .order_by(Post.created_at.desc(), Post.id.desc())
+        .limit(3)
+        .all()
+    )
+    return [post.to_dict() for post in posts]

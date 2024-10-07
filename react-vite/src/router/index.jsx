@@ -34,8 +34,11 @@ export const router = createBrowserRouter([
         element: <UserProfile />,
         loader: async ({ params }) => {
           const { userId } = params;
-          const res = await fetch(`/api/users/${userId}`);
-          return res.json();
+          const userRes = await fetch(`/api/users/${userId}`);
+          const postsRes = await fetch(`/api/users/${userId}/posts`);
+          const user = await userRes.json();
+          const posts = await postsRes.json();
+          return { user, posts };
         },
       },
       {

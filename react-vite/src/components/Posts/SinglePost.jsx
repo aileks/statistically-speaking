@@ -1,4 +1,4 @@
-import { useFetcher, useLoaderData, useNavigate } from 'react-router-dom';
+import { Link, useFetcher, useLoaderData, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import EditPost from './EditPost';
 import { useState } from 'react';
@@ -51,7 +51,18 @@ export default function SinglePost() {
           />
         : <>
             <h2 className='font-bold underline'>{post.title}</h2>
-            <p className='text-sm text-slate-500'>by {post.user.username}</p>
+
+            <Link
+              className='mb-3 w-fit text-sm text-slate-500 hover:text-slate-600 hover:underline'
+              onClick={e => e.stopPropagation()}
+              to={
+                user && post.user.username === user?.username ?
+                  '/profile'
+                : `/user/${post.user.id}`
+              }
+            >
+              by {post.user.username}
+            </Link>
 
             <p className='text-lg text-gray-800'>{post.body}</p>
 

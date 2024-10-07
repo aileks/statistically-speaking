@@ -4,15 +4,20 @@ import { useSelector } from 'react-redux';
 import FollowButton from '../FollowButton';
 
 export default function UserProfile() {
-  const user = useLoaderData();
+  const { user, posts } = useLoaderData();
   const currentUser = useSelector(state => state.session.user);
-  console.log(user);
+
+  const truncateText = (text, maxLength) => {
+    if (text.length <= maxLength) return text;
+    return text.slice(0, maxLength) + '...';
+  };
 
   return (
     <div className='container'>
       <div className='card'>
         <section className='flex items-end justify-center gap-3'>
           <RxAvatar className='text-6xl text-blue-600' />
+
           <h2 className='text-gray-800'>
             {user.firstName} {user.lastName}
           </h2>
@@ -40,6 +45,18 @@ export default function UserProfile() {
           <p className='font-medium text-gray-800'>{user.bio}</p>
         </section>
       </div>
+
+      <section className=''>
+        {posts.map(post => (
+          <div
+            key={post.id}
+            className='card'
+          >
+            <h3 className='text-gray-800'>{post.title}</h3>
+            <p className='text-gray-800'>{truncateText(post.body, 300)}</p>
+          </div>
+        ))}
+      </section>
     </div>
   );
 }
