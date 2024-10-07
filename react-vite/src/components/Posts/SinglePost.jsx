@@ -10,7 +10,8 @@ import LineGraph from '../Graphs/LineGraph';
 import BarGraph from '../Graphs/BarGraph';
 import DeleteModal from '../DeleteModal';
 import { useModal } from '../../context/Modal';
-import Comments from '../Comments/index.js';
+import Comments from '../Comments';
+import { IoCloudDownload } from 'react-icons/io5';
 
 export default function SinglePost() {
   const { addToast } = useToast();
@@ -20,8 +21,6 @@ export default function SinglePost() {
   const fetcher = useFetcher();
   const user = useSelector(state => state.session.user);
   const graphType = post?.graph?.type;
-  const col1 = post?.graph?.col1;
-  const col2 = post?.graph?.col2;
   const [editingPostId, setEditingPostId] = useState(-1);
 
   const handleEdit = (e, post) => {
@@ -95,22 +94,21 @@ export default function SinglePost() {
             )}
 
             {graphType === 'table' && <Table data={post.dataframe} />}
-            {graphType === 'bar' && (
-              <BarGraph
-                data={post.dataframe}
-                col1={col1}
-                col2={col2}
-              />
-            )}
-            {graphType === 'line' && (
-              <LineGraph
-                data={post.dataframe}
-                col1={col1}
-                col2={col2}
-              />
-            )}
+            {graphType === 'bar' && <BarGraph data={post.dataframe} />}
+            {graphType === 'line' && <LineGraph data={post.dataframe} />}
           </>
         }
+
+        {user && (
+          <a
+            href={`${post.graph.url}`}
+            download
+            className='text-sm mt-6 mb-0 self-end text-green-700 transition-all duration-200 hover:text-green-800 hover:underline'
+          >
+            <IoCloudDownload className='inline-block mr-1' />
+            Download Data
+          </a>
+        )}
       </div>
 
       <Comments post={post} />
