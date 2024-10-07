@@ -154,7 +154,7 @@ export default function Comments({ post }) {
             : <>
                 <Link
                   to={
-                    user.username === comment.user.username ?
+                    user && user.username === comment.user.username ?
                       '/profile'
                     : `/users/${comment.user.id}`
                   }
