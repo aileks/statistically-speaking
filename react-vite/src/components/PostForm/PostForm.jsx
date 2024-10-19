@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useFetcher } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import * as d3 from 'd3'; // for CSV parsing
 
 export default function PostForm() {
   const user = useSelector(state => state.session.user);
@@ -10,6 +11,10 @@ export default function PostForm() {
   const [errors, setErrors] = useState({});
   const [csvFile, setCsvFile] = useState(null);
   const [graphType, setGraphType] = useState('table');
+  const [csvData, setCsvData] = useState([]);
+  const [columns, setColumns] = useState([]);
+  const [xAxis, setXAxis] = useState('');
+  const [yAxis, setYAxis] = useState('');
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -26,6 +31,23 @@ export default function PostForm() {
       }
     }
   }, [fetcher.data]);
+
+  const handleFileChange = e => {
+    const file = e.target.files[0];
+    if (file && file.name.endsWith('.csv')) {
+      setCsvFile(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        const text = reader.result;
+        const parsedData = d3.csvParse(text);
+        setCsvData(parsedData);
+        setColumns(Object.keys(parsedData[0]));
+        setXAxis('');
+        setYAxis('');
+      };
+      reader.readAsText(file);
+    }
+  };
 
   const handleErrors = () => {
     const newErrors = {};
@@ -52,11 +74,11 @@ export default function PostForm() {
       newErrors.csvFile = 'File must be a CSV';
     }
 
-    return newErrors;
-  };
+    if (!xAxis || !yAxis) {
+      newErrors.axis = 'You must select both x-axis and y-axis columns';
+    }
 
-  const handleFileChange = e => {
-    setCsvFile(e.target.files[0]);
+    return newErrors;
   };
 
   const handleSubmit = async e => {
@@ -74,6 +96,8 @@ export default function PostForm() {
     formData.append('body', body);
     formData.append('csv_file', csvFile);
     formData.append('graph_type', graphType);
+    formData.append('x_axis', xAxis);
+    formData.append('y_axis', yAxis);
 
     try {
       await fetcher.submit(formData, {
@@ -153,10 +177,64 @@ export default function PostForm() {
           <p className='text-sm italic text-red-500'>{errors.csvFile}</p>
         )}
 
-        {errors.message && (
-          <p className='text-sm italic text-red-500'>{errors.message}</p>
+        {(graphType === 'bar' || graphType === 'line') &&
+          columns.length > 0 && (
+            <>
+              <label>
+                X-Axis:
+                <select
+                  value={xAxis}
+                  onChange={e => setXAxis(e.target.value)}
+                  className='ml-2 rounded-md border border-gray-400 bg-white px-1'
+                >
+                  <option
+                    value=''
+                    disabled
+                  >
+                    Select column
+                  </option>
+                  {columns.map(col => (
+                    <option
+                      key={col}
+                      value={col}
+                    >
+                      {col}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label>
+                Y-Axis:
+                <select
+                  value={yAxis}
+                  onChange={e => setYAxis(e.target.value)}
+                  className='ml-2 rounded-md border border-gray-400 bg-white px-1'
+                >
+                  <option
+                    value=''
+                    disabled
+                  >
+                    Select column
+                  </option>
+                  {columns.map(col => (
+                    <option
+                      key={col}
+                      value={col}
+                    >
+                      {col}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </>
+          )}
+
+        {errors.axis && (
+          <p className='text-sm italic text-red-500'>{errors.axis}</p>
         )}
 
+        {/* Submit Button */}
         <button
           type='submit'
           className='mt-3 max-w-fit self-end btn'

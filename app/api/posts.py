@@ -4,7 +4,7 @@ from flask import Blueprint, request
 from flask_login import current_user
 
 from app.models import db, Post, Save, Graph, Comment
-from app.upload import upload_file_to_s3, remove_file_from_s3, get_unique_filename
+from app.upload import upload_file_to_s3, remove_file_from_s3
 from app.utils import get_data, check_data
 
 posts = Blueprint("posts", __name__)
@@ -38,22 +38,24 @@ def post_by_id(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int]
 
 
 @posts.route("", methods=["POST"])
-def create_post() -> Union[dict[str, str], tuple[dict[str, str], int]]:
+def create_post():
     if not current_user:
         return {"error": "Unauthorized"}, 401
 
     title = request.form.get("title")
     body = request.form.get("body")
     graph_type = request.form.get("graph_type")
+    x_axis = request.form.get("x_axis")
+    y_axis = request.form.get("y_axis")
     csv_file = request.files.get("csv_file")
 
-    if not title or not body or not csv_file:
+    if not title or not body or not csv_file or not x_axis or not y_axis:
         return {"message": "Missing required fields"}, 400
 
     if csv_file.filename.rsplit(".", 1)[1].lower() != "csv":
         return {"message": "File must be a CSV"}, 400
 
-    csv_file.filename = get_unique_filename(csv_file.filename)
+    # csv_file.filename = get_unique_filename(csv_file.filename)
     upload_res = upload_file_to_s3(csv_file)
 
     if "url" not in upload_res:
@@ -65,7 +67,12 @@ def create_post() -> Union[dict[str, str], tuple[dict[str, str], int]]:
         user_id=current_user.id,
     )
 
-    new_graph = Graph(url=upload_res["url"], type=graph_type)
+    new_graph = Graph(
+        url=upload_res["url"],
+        type=graph_type,
+        x_axis=x_axis if x_axis else None,
+        y_axis=y_axis if y_axis else None
+    )
 
     try:
         db.session.add(new_post)
@@ -73,16 +80,13 @@ def create_post() -> Union[dict[str, str], tuple[dict[str, str], int]]:
 
         new_graph.post_id = new_post.id
 
-        graph_data_ok = check_data(new_graph)
-        if not graph_data_ok:
-            db.session.rollback()
-            return {
-                "message": "Graphs of type 'Bar' or 'Line' must have only two (2) columns"
-            }, 400
+        # graph_data_ok = check_data(new_graph)
+        # if not graph_data_ok:
+        #     db.session.rollback()
+        #     return {"message": "Invalid data for bar/line graph"}, 400
 
         db.session.add(new_graph)
         db.session.commit()
-
     except Exception as e:
         db.session.rollback()
         return {"message": str(e)}, 500

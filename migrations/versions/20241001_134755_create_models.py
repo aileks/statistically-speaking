@@ -48,6 +48,8 @@ def upgrade():
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("url", sa.String(), nullable=False),
         sa.Column("type", sa.String(), nullable=False),
+        sa.Column("x_axis", sa.String()),
+        sa.Column("y_axis", sa.String()),
         sa.Column("post_id", sa.Integer(), nullable=False),
         sa.ForeignKeyConstraint(
             ["post_id"],

@@ -12,6 +12,8 @@ class Graph(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String, nullable=False)
     type = db.Column(db.String, nullable=False)
+    x_axis = db.Column(db.String)
+    y_axis = db.Column(db.String)
     post_id = db.Column(
         db.Integer,
         db.ForeignKey(add_prefix_for_prod("posts.id")),
