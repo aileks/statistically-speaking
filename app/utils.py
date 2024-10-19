@@ -11,7 +11,10 @@ def get_data(graph: dict[str, str]) -> dict[str, list]:
               structured in a split format with columns and data.
     """
     df: pd.DataFrame = pd.read_csv(graph["url"])
-    data: dict[str, list] = df.to_dict("split")
+    x_axis: str = graph["x_axis"]
+    y_axis: str = graph["y_axis"]
+    selected: pd.DataFrame = df[[x_axis, y_axis]]
+    data: dict[str, list] = selected.to_dict("split")
     return data
 
 

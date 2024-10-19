@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useFetcher } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import * as d3 from 'd3'; // for CSV parsing
+import * as d3 from 'd3';
 
 export default function PostForm() {
   const user = useSelector(state => state.session.user);
@@ -11,7 +11,6 @@ export default function PostForm() {
   const [errors, setErrors] = useState({});
   const [csvFile, setCsvFile] = useState(null);
   const [graphType, setGraphType] = useState('table');
-  const [csvData, setCsvData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [xAxis, setXAxis] = useState('');
   const [yAxis, setYAxis] = useState('');
@@ -40,7 +39,6 @@ export default function PostForm() {
       reader.onload = () => {
         const text = reader.result;
         const parsedData = d3.csvParse(text);
-        setCsvData(parsedData);
         setColumns(Object.keys(parsedData[0]));
         setXAxis('');
         setYAxis('');

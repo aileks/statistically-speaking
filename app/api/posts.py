@@ -109,12 +109,19 @@ def update_post(post_id: int) -> Union[dict[str, str], tuple[dict[str, str], int
     updated_post.body = request.form.get("body")
     updated_graph.type = request.form.get("graph_type")
 
-    graph_data_ok = check_data(updated_graph)
-    if not graph_data_ok:
-        db.session.rollback()
-        return {
-            "message": "Graphs of type 'Bar' or 'Line' must have only two (2) columns"
-        }, 400
+    x_axis = request.form.get("x_axis")
+    y_axis = request.form.get("y_axis")
+
+    if (x_axis and y_axis):
+        updated_graph.x_axis = x_axis
+        updated_graph.y_axis = y_axis
+
+    # graph_data_ok = check_data(updated_graph)
+    # if not graph_data_ok:
+    #     db.session.rollback()
+    #     return {
+    #         "message": "Graphs of type 'Bar' or 'Line' must have only two (2) columns"
+    #     }, 400
 
     db.session.commit()
 

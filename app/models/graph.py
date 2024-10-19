@@ -28,5 +28,7 @@ class Graph(db.Model):
             "id": self.id,
             "url": self.url,
             "type": self.type,
+            "x_axis": self.x_axis,
+            "y_axis": self.y_axis,
             "post_id": self.post_id,
         }

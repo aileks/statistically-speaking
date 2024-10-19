@@ -4,8 +4,6 @@ import * as d3 from 'd3';
 export default function BarGraph({ data }) {
   const svgRef = useRef();
 
-  console.log(data);
-
   const drawBarGraph = () => {
     if (!svgRef.current) {
       console.error('SVG ref is null');

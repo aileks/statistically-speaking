@@ -1,11 +1,34 @@
 import { useEffect, useState } from 'react';
+import * as d3 from 'd3';
 
 export default function EditPost({ post, fetcher, setEditingPostId }) {
+  const csvUrl = post.graph.url;
   const [editedTitle, setEditedTitle] = useState(post.title);
   const [editedBody, setEditedBody] = useState(post.body);
   const [editedType, setEditedType] = useState(post.graph.type);
   const [errors, setErrors] = useState({});
+  const [columns, setColumns] = useState([]);
+  const [xAxis, setXAxis] = useState('');
+  const [yAxis, setYAxis] = useState('');
   const [disabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    const fetchCsvData = async () => {
+      try {
+        const csvData = await d3.csv(csvUrl);
+
+        const columnNames = Object.keys(csvData[0]);
+        setColumns(columnNames);
+
+        setXAxis(columnNames[0]);
+        setYAxis(columnNames[1]);
+      } catch (err) {
+        console.err('Error fetching or parsing CSV:', err);
+      }
+    };
+
+    fetchCsvData();
+  }, [csvUrl]);
 
   useEffect(() => {
     if (fetcher.state === 'idle' && fetcher.data) {
@@ -41,6 +64,10 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
       newErrors.body = 'Post cannot be more than 1500 characters';
     }
 
+    if (!xAxis || !yAxis) {
+      newErrors.axis = 'You must select both x-axis and y-axis columns';
+    }
+
     return newErrors;
   };
 
@@ -55,7 +82,14 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
 
     try {
       await fetcher.submit(
-        { id, title: editedTitle, body: editedBody, graph_type: editedType },
+        {
+          id,
+          title: editedTitle,
+          body: editedBody,
+          graph_type: editedType,
+          x_axis: xAxis || null,
+          y_axis: yAxis || null,
+        },
         { method: 'PUT', action: '/edit' }
       );
     } catch (err) {
@@ -102,11 +136,65 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
         </select>
       </label>
 
-      {/*{errors.type && (*/}
-      {/*  <p className='text-sm italic text-red-500'>{errors.type}</p>*/}
-      {/*)}*/}
       {errors.message && (
         <p className='text-sm italic text-red-500'>{errors.message}</p>
+      )}
+
+      {(post.graph.type === 'bar' || post.graph.type === 'line') &&
+        columns.length > 0 && (
+          <>
+            <label>
+              X-Axis:
+              <select
+                value={xAxis}
+                onChange={e => setXAxis(e.target.value)}
+                className='ml-2 rounded-md border border-gray-400 bg-white px-1'
+              >
+                <option
+                  value=''
+                  disabled
+                >
+                  Select column
+                </option>
+                {columns.map(col => (
+                  <option
+                    key={col}
+                    value={col}
+                  >
+                    {col}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label>
+              Y-Axis:
+              <select
+                value={yAxis}
+                onChange={e => setYAxis(e.target.value)}
+                className='ml-2 rounded-md border border-gray-400 bg-white px-1'
+              >
+                <option
+                  value=''
+                  disabled
+                >
+                  Select column
+                </option>
+                {columns.map(col => (
+                  <option
+                    key={col}
+                    value={col}
+                  >
+                    {col}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </>
+        )}
+
+      {errors.axis && (
+        <p className='text-sm italic text-red-500'>{errors.axis}</p>
       )}
 
       <div className='self-end space-x-3'>
