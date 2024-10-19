@@ -5,7 +5,7 @@ from flask_login import current_user
 
 from app.models import db, Post, Save, Graph, Comment
 from app.upload import upload_file_to_s3, remove_file_from_s3
-from app.utils import get_data, check_data
+from app.utils import get_data
 
 posts = Blueprint("posts", __name__)
 
@@ -55,7 +55,7 @@ def create_post():
     if csv_file.filename.rsplit(".", 1)[1].lower() != "csv":
         return {"message": "File must be a CSV"}, 400
 
-    # csv_file.filename = get_unique_filename(csv_file.filename)
+    csv_file.filename = get_unique_filename(csv_file.filename)
     upload_res = upload_file_to_s3(csv_file)
 
     if "url" not in upload_res:
