@@ -32,7 +32,7 @@ export default function SinglePost() {
     await fetcher.submit({ id }, { method: 'DELETE', action: '/delete' });
     addToast('Post deleted successfully!');
     fetcher.load('/');
-    navigate('/');
+    setTimeout(() => navigate('/'), 100);
   };
 
   const openDeleteModal = id => {

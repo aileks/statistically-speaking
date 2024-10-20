@@ -23,7 +23,7 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
         setXAxis(columnNames[0]);
         setYAxis(columnNames[1]);
       } catch (err) {
-        console.err('Error fetching or parsing CSV:', err);
+        console.error('Error fetching or parsing CSV:', err);
       }
     };
 
@@ -140,7 +140,7 @@ export default function EditPost({ post, fetcher, setEditingPostId }) {
         <p className='text-sm italic text-red-500'>{errors.message}</p>
       )}
 
-      {(post.graph.type === 'bar' || post.graph.type === 'line') &&
+      {(editedType === 'bar' || editedType === 'line') &&
         columns.length > 0 && (
           <>
             <label>

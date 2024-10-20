@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useFetcher } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import EditPost from './EditPost.jsx';
@@ -13,11 +13,6 @@ export default function AllPosts({ posts }) {
   const user = useSelector(state => state.session.user);
   const fetcher = useFetcher();
   const [editingPostId, setEditingPostId] = useState(-1);
-
-  useEffect(() => {
-    /* forces a re-render so when a post is deleted from the SinglePost view
-     it's also removed from the AllPosts view and the list is properly updated */
-  }, [fetcher.data]);
 
   const handleEdit = (e, post) => {
     e.preventDefault();
