@@ -6,6 +6,7 @@ import Index from '../components/Index';
 import SinglePost from '../components/Posts/SinglePost';
 import MyProfile from '../components/Profile';
 import UserProfile from '../components/Profile/UserProfile.jsx';
+import Following from '../components/Profile/Following.jsx';
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
         },
       },
       {
+        path: 'following',
+        element: <Following />,
+      },
+      {
         path: 'profile',
         element: <MyProfile />,
         loader: async () => {
@@ -62,7 +67,7 @@ export const router = createBrowserRouter([
             }
           );
 
-          return await res.json();
+          return res.json();
         },
       },
       {

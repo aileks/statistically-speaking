@@ -41,6 +41,12 @@ export default function SinglePost() {
 
   if (post.error === 'Post not found') return <NotFound />;
 
+  const formattedDate = new Date(post.createdAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+
   return (
     <div className='container'>
       <div className='mt-14 flex flex-col card'>
@@ -62,7 +68,7 @@ export default function SinglePost() {
                 : `/user/${post.user?.id}`
               }
             >
-              by {post.user?.username}
+              by {post.user?.username} • {formattedDate}
             </Link>
 
             <p className='text-lg text-gray-800'>{post.body}</p>

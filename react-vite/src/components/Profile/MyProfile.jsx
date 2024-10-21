@@ -2,7 +2,6 @@ import { useEffect, useMemo } from 'react';
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import SaveIcon from '../SaveIcon/index.js';
-import { RiUserFollowFill } from 'react-icons/ri';
 import { thunkRefreshUser } from '../../redux/session.js';
 
 export default function MyProfile() {
@@ -32,33 +31,22 @@ export default function MyProfile() {
 
   return (
     <div className='container mx-auto px-4'>
-      <aside className='card relative mb-4 p-4 md:absolute md:left-16 md:mb-0 md:w-1/4 lg:w-1/6'>
-        <h3 className='mb-4 text-lg font-bold'>Following</h3>
-        {user.following.length > 0 ?
-          <ul>
-            {user.following.map(follow => (
-              <li
-                key={follow.id}
-                className='mb-2'
-              >
-                <Link
-                  to={`/user/${follow.id}`}
-                  className='flex items-center gap-1 text-blue-600 transition-all duration-200 hover:text-blue-800 hover:underline'
-                >
-                  <RiUserFollowFill className='text-xl text-blue-600' />
-                  {follow.username}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        : <p className='text-gray-600'>You are not following anyone yet.</p>}
-      </aside>
-
       <main className='md:ml-[25%] lg:ml-[16.66%]'>
         <h2 className='mb-1 text-xl font-semibold'>Profile</h2>
+
         <h4 className='mb-4 text-gray-500'>
-          {user?.followCount}{' '}
-          {user?.followCount === 1 ? 'Follower' : 'Followers'}
+          <span>
+            {user?.followCount}{' '}
+            {user?.followCount === 1 ? 'Follower' : 'Followers'}
+            {' • '}
+          </span>
+
+          <Link
+            to='/following'
+            className='text-blue-600 transition-all duration-200 hover:text-blue-800 hover:underline'
+          >
+            Following ({user?.following.length})
+          </Link>
         </h4>
 
         {userSaves.length === 0 ?
@@ -67,21 +55,27 @@ export default function MyProfile() {
           </h3>
         : <h3 className='mb-4 text-lg font-semibold'>Saved Posts</h3>}
 
-        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+        <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
           {userSaves.map(post => (
             <Link
               key={post.id}
-              className='relative p-4 bg-white rounded shadow'
+              className='relative rounded-lg bg-white p-5 shadow transition-all duration-200 hover:shadow-lg'
               to={`/post/${post.id}`}
             >
-              <div className='absolute top-3 right-3'>
+              <div className='absolute top-2 right-2'>
                 <SaveIcon
                   post={post}
                   user={user}
                 />
               </div>
-              <h3 className='mb-2 text-xl font-semibold'>{post.title}</h3>
-              <p className='text-gray-600'>{truncateText(post.body, 100)}</p>
+
+              <h3 className='mb-2 text-lg font-semibold leading-snug'>
+                {post.title}
+              </h3>
+
+              <p className='leading-relaxed text-gray-600'>
+                {truncateText(post.body, 80)}
+              </p>
             </Link>
           ))}
         </div>
