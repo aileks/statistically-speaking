@@ -14,7 +14,9 @@ class Post(db.Model):
     title = db.Column(db.String(100), nullable=False)
     body = db.Column(db.Text(), nullable=False)
     user_id = db.Column(
-        db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False
+        db.Integer,
+        db.ForeignKey(add_prefix_for_prod("users.id")),
+        nullable=False,
     )
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, onupdate=datetime.now)
@@ -23,7 +25,10 @@ class Post(db.Model):
     graph = db.relationship("Graph", uselist=False, back_populates="post")
     saves = db.relationship("Save", back_populates="post")
     comments = db.relationship(
-        "Comment", back_populates="post", cascade="all, delete-orphan"
+        "Comment",
+        back_populates="post",
+        cascade="all, delete-orphan",
+        order_by="asc(Comment.created_at)",
     )
 
     def to_dict(self) -> dict[str, Union[int, str]]:
