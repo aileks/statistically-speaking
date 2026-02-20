@@ -1,4 +1,4 @@
-# Statstically Speaking
+# Statistically Speaking
 
 Statistically Speaking is a social media platform designed for data analysts, data scientists, and anyone passionate
 about data and graphs. Users can create, share, and explore posts filled with visualizations, analyses, and datasets.
@@ -85,4 +85,4 @@ cd react-vite && npm run dev
 
 ### 4. Access the Application
 
-Visit `http://localhost:5173/` in your browser to start using Beatbox.
+Visit `http://localhost:5173/` in your browser to start the server.
